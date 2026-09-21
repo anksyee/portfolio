@@ -305,6 +305,9 @@ h1 .r{color:var(--red)}
 @media (max-width:900px){.spiralrow{grid-template-columns:1fr}}
 .body.closing{font-family:var(--serif);font-size:clamp(19px,2.4vw,30px);line-height:1.5;color:var(--soft);margin:0}
 .lactions{display:flex;gap:12px;flex-wrap:wrap;margin-top:2.2em}
+.open.off{color:var(--dim);border-color:var(--hair);cursor:default}
+.open.off::after{display:none}
+.open.off .ar{opacity:.6}
 .liminal code{font-family:var(--mono);font-size:.92em;color:var(--mut);background:rgba(231,228,220,.05);padding:1px 5px}
 
 /* ---------- work 06 — cell music ---------- */
@@ -757,17 +760,14 @@ h1 .r{color:var(--red)}
             <dt>status</dt><dd>playable</dd>
           </dl>
           <div class="lactions">
-            <a class="open" href="liminal-express.html" target="_blank" rel="noopener">
-              <span>play liminal express</span><span class="ar">→</span>
-            </a>
+            <span class="open off"><span>play liminal express</span><span class="ar">—</span></span>
             <a class="open" href="liminality-mechanisms.pdf" target="_blank" rel="noopener">
               <span>read the paper</span><span class="ar">→</span>
             </a>
           </div>
-          <p class="note" id="serverNote">
-            the game is built from ES modules, so it runs from a local server rather than a
-            double-clicked file — start it with <code>ruby serve.rb</code> and play at
-            <code>127.0.0.1:5173/liminal-express.html</code>. the paper opens directly.
+          <p class="note">
+            the playable build is not public yet — the stills above are from it. locally it runs
+            from a server: <code>ruby serve.rb</code>, then <code>127.0.0.1:5173/liminal-express.html</code>.
           </p>
         </div>
 
@@ -2117,9 +2117,6 @@ function boot(){
   keysInit();
   scrollFrame();
 
-  /* the local-server note is only relevant when opening the file directly */
-  const sn = $('#serverNote');
-  if (sn && location.protocol !== 'file:') sn.style.display = 'none';
 
   /* re-measure on resize */
   let rz;
