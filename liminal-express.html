@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LIMINAL EXPRESS</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<canvas id="scene"></canvas>
+<canvas id="fx"></canvas>
+
+<div id="fade"></div>
+<div id="flash"></div>
+<div id="vignette"></div>
+<div id="scanlines"></div>
+
+<div id="title">
+  <div class="wordmark">LIMINAL</div>
+  <div class="wordmark big">EXPRESS</div>
+  <button id="board">CLICK TO BOARD</button>
+  <div class="keys">WASD · MOUSE · M = MUTE · R = RESTART</div>
+</div>
+
+<div id="line"></div>
+<div id="prompt"></div>
+<div id="hint">WASD MOVE &nbsp;·&nbsp; SHIFT RUN &nbsp;·&nbsp; SPACE JUMP &nbsp;·&nbsp; E OPEN DOOR &nbsp;·&nbsp; CLICK TO LOOK</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+<script type="module" src="./src/main.js?v=4"></script>
+</body>
+</html>

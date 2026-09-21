@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A TEST CARTOGRAPHY</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fff;color:#111;font-family:-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif}
+h2{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#666;
+  padding-bottom:10px;border-bottom:1px solid #e5e7eb;margin-bottom:18px}
+main{max-width:1100px;margin:0 auto;padding:56px 36px 80px;display:grid;grid-template-columns:1.5fr 1fr;gap:48px}
+@media (max-width:980px){main{grid-template-columns:1fr}}
+
+/* ---- graph ---- */
+.cbody{display:grid;grid-template-columns:minmax(0,1fr) 232px;gap:26px}
+@media (max-width:640px){.cbody{grid-template-columns:1fr}}
+.graphs{display:flex;flex-direction:column;gap:22px}
+#sat,#sat2{width:100%;display:block}
+.g-note{font-size:9px;letter-spacing:.14em;color:#999;text-transform:uppercase;margin-bottom:6px}
+.obj-n{font-size:9px;font-weight:600;letter-spacing:.1em;fill:#444;text-anchor:middle}
+.math-l{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:14px;fill:#111;text-anchor:middle}
+.edge-name{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:11px;fill:#555}
+.c-real{stroke:#71767e;stroke-width:1;fill:none;opacity:.65}
+.c-ghost{stroke:#c96a64;stroke-width:1.1;fill:none;stroke-dasharray:5 5}
+.obs-halo{fill:rgba(35,37,41,.05)}
+.obs-node{fill:#232529;filter:drop-shadow(0 0 1.5px rgba(0,0,0,.45))}
+.spine{stroke:#111;stroke-width:1.5;fill:none}
+.skip{stroke:#111;stroke-width:1.3;fill:none}
+.comp{stroke:#c96a64;stroke-width:1.1;fill:none;stroke-dasharray:5 5}
+.comp-num{font-size:8.5px;fill:#949ba3;text-anchor:middle;font-family:monospace}
+.leg{font-family:monospace;font-size:8.5px;fill:#666}
+.leg-ln{stroke-width:1.3;fill:none}
+.fig-l{stroke:#333;stroke-width:1.2;fill:none}
+.fig-d{stroke:#c96a64;stroke-width:1.1;fill:none;stroke-dasharray:5 5}
+.fig-lb{font-size:12px;letter-spacing:.12em;fill:#3c3c3c;text-anchor:middle;font-weight:500}
+.fig-hd{font-size:10px;letter-spacing:.24em;fill:#8a8a8a;text-anchor:middle}
+.fig-hd b{fill:#c96a64;font-weight:600}
+.leg-t{font-size:10px;letter-spacing:.08em;fill:#555}
+
+/* ---- side derivation ---- */
+.proc{border-left:1px solid #e5e7eb;padding-left:16px}
+.p-h{font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#999;margin-bottom:10px}
+.p-l{font-family:monospace;font-size:10px;line-height:1.9;color:#111}
+.p-l em{font-style:normal;color:#9ca3af;font-size:9.5px}
+.p-l .r{color:#b91c1c;font-weight:600}
+.p-note{font-family:monospace;font-size:9.5px;line-height:1.7;color:#666;margin:7px 0}
+.p-box{font-family:monospace;font-size:10.5px;border:1.2px solid #111;display:inline-block;padding:1px 8px;margin-top:8px}
+.p-box b{color:#b91c1c}
+
+/* ---- written derivation ---- */
+.deriv{font-family:monospace;font-size:11.5px;line-height:2;color:#111}
+.d-step{display:flex;gap:10px;align-items:baseline}
+.d-n{width:20px;flex:none;color:#9ca3af;font-size:10px}
+.d-f{white-space:pre-wrap}
+.d-why{color:#9ca3af;font-size:10px;margin-left:8px}
+.d-next{color:#9ca3af;font-size:10px;margin-left:10px}
+.d-sep{height:1px;background:#e5e7eb;margin:10px 0}
+.d-box{display:inline-block;border:1.3px solid #111;padding:0 8px;font-weight:600}
+.d-red{color:#b91c1c;font-weight:600}
+.d-prove{color:#666}
+.d-gloss{margin:2px 0 12px 30px;font-size:10.5px;color:#777;line-height:1.65;font-style:italic}
+.verdict{margin-top:18px;border:1px solid #111;padding:12px 14px;font-size:11px;font-family:monospace;line-height:1.9}
+.verdict b{color:#b91c1c}
+</style>
+</head>
+<body>
+
+<main>
+  <section>
+    <h2>CONSTELLATION</h2>
+    <div class="cbody">
+      <div class="graphs">
+        <div>
+          <div class="g-note">as ordered — chain, skips and composites</div>
+          <svg id="sat" viewBox="0 0 560 326" role="img" aria-label="constellation"></svg>
+        </div>
+        <div>
+          <div class="g-note">as connected — the field as it stands</div>
+          <svg id="sat2" viewBox="0 0 520 400" role="img" aria-label="constellation"></svg>
+        </div>
+        <div>
+          <div class="g-note">as forced — given vs closure, side by side</div>
+          <svg id="sat3" viewBox="0 0 900 540" role="img" aria-label="constellation"></svg>
+        </div>
+      </div>
+      <div class="proc">
+        <div class="p-h">derivation</div>
+        <div class="p-l">cl(R) = R ∪ R² ∪ R³ ∪ R⁴ ∪ R⁵</div>
+        <div class="p-l">R² ∖ R &nbsp;· +6 <em>A→C A→M G→K G→P C→K C→P</em></div>
+        <div class="p-l">R³ ∖ R² · +2 <em>A→K A→P</em></div>
+        <div class="p-l">R⁴ ∖ R³ = R⁵ ∖ R⁴ · +0 <em>(height = 5)</em></div>
+        <div class="p-note">|R| = 7 · |R̄| = 7 + 6 + 2 = 15</div>
+        <div class="p-l">Δ = |R̄| − |R| = <span class="r">8</span> <em>— forced, not free</em></div>
+        <div class="p-note">⊢ acyclic · |R̄| = C(6,2) ⟹ <b>total</b> order · min = ARTIST, max = PUBLIC</div>
+        <div class="p-note">⊢ in R̄ (thin): initial = ARTIST ≠ terminal = PUBLIC ⟹ <b>no zero object</b> — no centre</div>
+        <div class="p-note">⊢ R ⊆ S ⟹ R̄ ⊆ S̄ — forces exactly its paths, nothing more</div>
+        <div class="p-box">Δ = 8 <b>forced-fabricated</b> · no centre ∎</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>CALCULATIONS</h2>
+    <div class="deriv">
+      <div class="d-step"><span class="d-n">01</span><span class="d-f">cl(R) = R ∪ R² ∪ R³ ∪ R⁴ ∪ R⁵</span></div>
+      <div class="d-gloss">every route in the field is tallied by length; the DAG's height is 5 (A→G→C→M→K→P).</div>
+      <div class="d-step"><span class="d-n">02</span><span class="d-f">R² ∖ R = A→C, A→M · G→K, G→P · C→K, C→P</span><span class="d-next">+6</span></div>
+      <div class="d-gloss">two-step routes: pairs the field never marks directly — no single work is any of them.</div>
+      <div class="d-step"><span class="d-n">03</span><span class="d-f">R³ ∖ R² = A→K · A→P</span><span class="d-next">+2</span></div>
+      <div class="d-gloss">three steps close the last two pairs.</div>
+      <div class="d-step"><span class="d-n">04</span><span class="d-f">R⁴ ∖ R³ = R⁵ ∖ R⁴ = ∅</span><span class="d-next">+0</span></div>
+      <div class="d-gloss">longer routes only revisit pairs already registered.</div>
+      <div class="d-sep"></div>
+      <div class="d-step"><span class="d-n">05</span><span class="d-f">|R| = 7 · |R̄| = 7 + 6 + 2 = <b>15</b></span></div>
+      <div class="d-step"><span class="d-n">06</span><span class="d-f">Δ = |R̄| − |R| = <span class="d-red">8</span></span></div>
+      <div class="d-gloss">the field gives 7 relations; the mathematics demands 15. The 8 extras are forced by routes that already exist — each is bookkeeping, not a work, and none of them was chosen.</div>
+      <div class="d-step"><span class="d-n">07</span><span class="d-f">|R̄| = C(6,2) = 5 + 4 + 3 + 2 + 1 = 15</span></div>
+      <div class="d-gloss">every forward pair is present, so the order is <b>total</b>, not merely partial: A &lt; G &lt; C &lt; M &lt; K &lt; P — with ARTIST below all, PUBLIC above all.</div>
+      <div class="d-step"><span class="d-n">08</span><span class="d-f">⊢ in R̄ (a thin poset): initial = ARTIST · terminal = PUBLIC · distinct</span></div>
+      <div class="d-step"><span class="d-n">09</span><span class="d-f">&nbsp;&nbsp;&nbsp;⟹ <span class="d-box">no zero object</span> — no centre</span></div>
+      <div class="d-gloss">the order has a bottom and a top, and nothing that looks both ways — the one trace of dispersion that survives the forcing.</div>
+      <div class="d-sep"></div>
+      <div class="d-step"><span class="d-n">10</span><span class="d-f">⊢ cl is a closure operator — extensive · idempotent · monotone</span></div>
+      <div class="d-step"><span class="d-n">11</span><span class="d-f">proof: R ⊆ S ⟹ Rⁿ ⊆ Sⁿ ⟹ ⋃ Rⁿ ⊆ ⋃ Sⁿ</span></div>
+      <div class="d-gloss">any change in the 7 arrows carries through the closure; it can only follow paths already in the field — the fabrication is forced, not free. ∎</div>
+    </div>
+
+    <div class="verdict">
+      6 objects · 7 arrows · Δ = <b>8 forced-fabricated</b> · no centre ·<br>
+      F → F⁺ : <b>non-totalisability</b> — next register, not this computation.
+    </div>
+  </section>
+</main>
+
+<script>
+/* objects on the spine of the total order  A < G < C < M < K < P */
+/* given arrows:  f: A→G   g: G→C   h: C→M   i: M→K   j: K→P   ℓ: G→M   m: M→P  */
+const objX=[40,130,220,310,400,490];
+const objNames=['ARTIST','GALLERY','COLLECTOR','MUSEUM','CRITIC','PUBLIC'];
+const objLet=['A','G','C','M','K','P'];
+const Y=110;
+
+/* composites (dashed) : [src, tgt, ctrlX, ctrlY, num, label] */
+const comps=[
+  [0,2,130,138,1,'g∘f'],
+  [0,3,175,162,2,'ℓ∘f'],
+  [0,4,220,186,3,'i∘ℓ∘f'],
+  [0,5,265,210,4,'m∘ℓ∘f'],
+  [1,4,265,174,5,'i∘ℓ'],
+  [1,5,310,198,6,'m∘ℓ'],
+  [2,4,310,162,7,'i∘h'],
+  [2,5,355,186,8,'m∘h']
+];
+function arcXY(s,t,cx,cy){
+  return {x:0.25*objX[s]+0.5*cx+0.25*objX[t], y:0.25*Y+0.5*cy+0.25*Y};
+}
+let h=`<defs>
+  <marker id="msp" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker>
+  <marker id="mcp" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c96a64"/></marker>
+</defs>`;
+
+/* composite chords (dashed) */
+comps.forEach(c=>{
+  h+=`<path d="M ${objX[c[0]]} ${Y} Q ${c[2]} ${c[3]} ${objX[c[1]]} ${Y}" class="comp" marker-end="url(#mcp)"/>`;
+  const p=arcXY(c[0],c[1],c[2],c[3]);
+  h+=`<text x="${p.x}" y="${p.y+11}" class="comp-num">${c[4]}</text>`;
+});
+
+/* skips: ℓ: G→M ; m: M→P  (arcs kept clear of the object letters C, K) */
+h+=`<path d="M ${objX[1]} ${Y-2} Q ${(objX[1]+objX[3])/2} 50 ${objX[3]} ${Y-2}" class="skip" marker-end="url(#msp)"/>`;
+h+=`<text x="${(objX[1]+objX[3])/2}" y="62" class="edge-name" text-anchor="middle">ℓ</text>`;
+h+=`<path d="M ${objX[3]} ${Y-2} Q ${(objX[3]+objX[5])/2} 52 ${objX[5]} ${Y-2}" class="skip" marker-end="url(#msp)"/>`;
+h+=`<text x="${(objX[3]+objX[5])/2}" y="64" class="edge-name" text-anchor="middle">m</text>`;
+
+/* spine arrows */
+const spine=[[0,1,'f'],[1,2,'g'],[2,3,'h'],[3,4,'i'],[4,5,'j']];
+spine.forEach(e=>{
+  h+=`<path d="M ${objX[e[0]]} ${Y} L ${objX[e[1]]-4} ${Y}" class="spine" marker-end="url(#msp)"/>`;
+  h+=`<text x="${(objX[e[0]]+objX[e[1]])/2+6}" y="${Y-6}" class="edge-name">${e[2]}</text>`;
+});
+
+/* objects */
+objX.forEach((x,i)=>{
+  h+=`<circle cx="${x}" cy="${Y}" r="5" fill="#111"/>`;
+  h+=`<text x="${x}" y="${Y-14}" class="math-l">${objLet[i]}</text>`;
+  h+=`<text x="${x}" y="${Y+20}" class="obj-n">${objNames[i]}</text>`;
+});
+
+/* legend + composite table */
+h+=`
+  <line x1="40" y1="248" x2="70" y2="248" class="leg-ln" stroke="#111" marker-end="url(#msp)"/>
+  <text x="78" y="251" class="leg">realised by a work (7)</text>
+  <line x1="240" y1="248" x2="270" y2="248" stroke="#c96a64" stroke-width="1.1" stroke-dasharray="5 5" marker-end="url(#mcp)"/>
+  <text x="278" y="251" class="leg">fabricated by closure (8)</text>
+`;
+const table=[[1,'g∘f','A→C',5,'i∘ℓ','G→K'],[2,'ℓ∘f','A→M',6,'m∘ℓ','G→P'],[3,'i∘ℓ∘f','A→K',7,'i∘h','C→K'],[4,'m∘ℓ∘f','A→P',8,'m∘h','C→P']];
+table.forEach((r,ri)=>{
+  h+=`<text x="40" y="${270+ri*11}" class="leg">${r[0]}&nbsp;&nbsp;${r[1]}&nbsp;&nbsp;${r[2]}</text>`;
+  h+=`<text x="300" y="${270+ri*11}" class="leg">${r[3]}&nbsp;&nbsp;${r[4]}&nbsp;&nbsp;${r[5]}</text>`;
+});
+h+=`<text x="40" y="318" class="leg" opacity=".55">objects: total order A &lt; G &lt; C &lt; M &lt; K &lt; P — the closure IS the order</text>`;
+document.getElementById('sat').innerHTML=h;
+
+/* ---------- second view: the field as a graph of positions ---------- */
+const P=[
+  {n:'ARTIST',    x:170, y:86,  ab:1},
+  {n:'GALLERY',   x:300, y:122, ab:1},
+  {n:'COLLECTOR', x:138, y:212, ab:0},
+  {n:'MUSEUM',    x:404, y:212, ab:0},
+  {n:'CRITIC',    x:248, y:318, ab:1},
+  {n:'PUBLIC',    x:388, y:322, ab:0}
+];
+const real=[[0,1],[1,2],[1,3],[2,3],[3,4],[3,5],[4,5]];
+const ghost=[[0,2],[0,3],[0,4],[0,5],[1,4],[1,5],[2,4],[2,5]];
+function ePath(i,k){
+  const a=P[i[0]], b=P[i[1]];
+  const mx=(a.x+b.x)/2, my=(a.y+b.y)/2;
+  const L=Math.hypot(b.x-a.x,b.y-a.y)||1;
+  const cv=((i[0]+i[1])%2? k : -k);
+  const cx=mx+(-(b.y-a.y)/L)*cv, cy=my+((b.x-a.x)/L)*cv;
+  return `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`;
+}
+const size=[7.5,5.5,5.5,6.5,5.5,8];
+let g='';
+ghost.forEach(i=>{ g+=`<path d="${ePath(i,10)}" class="c-ghost"/>`; });
+real.forEach(i=>{ g+=`<path d="${ePath(i,14)}" class="c-real"/>`; });
+P.forEach((p,i)=>{
+  g+=`<circle cx="${p.x}" cy="${p.y}" r="${size[i]+7}" class="obs-halo"/>`;
+  g+=`<circle cx="${p.x}" cy="${p.y}" r="${size[i]}" class="obs-node"/>`;
+  g+=`<text x="${p.x}" y="${p.y+(p.ab?-13:21)}" class="obj-n">${p.n}</text>`;
+});
+g+=`<text x="40" y="372" class="leg">realised by a work (7)</text>`;
+g+=`<text x="40" y="384" class="leg">fabricated by closure (8)</text>`;
+g+=`<text x="40" y="396" class="leg">radius ∝ connections</text>`;
+document.getElementById('sat2').innerHTML=g;
+
+/* ---------- third view: given vs closure (side by side) ---------- */
+const F=[
+  {n:'A',x:210,y:64, lx:210, ly:49, an:'m'},
+  {n:'G',x:332,y:128,lx:352, ly:116, an:'m'},
+  {n:'C',x:356,y:258,lx:376, ly:262, an:'m'},
+  {n:'M',x:200,y:352,lx:200, ly:378, an:'m'},
+  {n:'K',x:72, y:258,lx:52,  ly:252, an:'end'},
+  {n:'P',x:186,y:134,lx:186, ly:118, an:'m'}
+];
+const gen=[[0,1],[1,2],[1,3],[2,3],[3,4],[3,5],[4,5]];
+const fab=[[0,2],[0,3],[0,4],[0,5],[1,4],[1,5],[2,4],[2,5]];
+const OX=480;
+function seg(s,t){
+  const a=F[s], b=F[t];
+  const L=Math.hypot(b.x-a.x,b.y-a.y);
+  const ux=(b.x-a.x)/L, uy=(b.y-a.y)/L;
+  return `M ${a.x+ux*3} ${a.y+uy*3} L ${b.x-ux*8} ${b.y-uy*8}`;
+}
+function drawFig(off,withFab){
+  let f=`<text x="${off+212}" y="30" class="fig-hd">${withFab?`CLOSED · 15 ( <b>8 forced</b> )`:'GIVEN · 7'}</text>`;
+  f+=`<g transform="translate(${off} 0)">`;
+  if(withFab) fab.forEach(i=>{ f+=`<path d="${seg(i[0],i[1])}" class="fig-d" marker-end="url(#mf2)"/>`; });
+  gen.forEach(i=>{ f+=`<path d="${seg(i[0],i[1])}" class="fig-l" marker-end="url(#mf1)"/>`; });
+  F.forEach(p=>{
+    f+=`<circle cx="${p.x}" cy="${p.y}" r="5" fill="#2b2b2b"/>`;
+    f+=`<text x="${p.lx}" y="${p.ly}" class="fig-lb" text-anchor="${p.an}">${p.n}</text>`;
+  });
+  f+=`</g>`;
+  return f;
+}
+let fig=`<defs>
+  <marker id="mf1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker>
+  <marker id="mf2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c96a64"/></marker>
+</defs>`;
+fig+=drawFig(0,false);
+fig+=drawFig(OX,true);
+/* legend */
+fig+=`<path d="M 330 496 L 386 496" class="fig-l" marker-end="url(#mf1)"/>`;
+fig+=`<text x="396" y="500" class="leg-t">realised by a work (7)</text>`;
+fig+=`<path d="M 578 496 L 634 496" class="fig-d" marker-end="url(#mf2)"/>`;
+fig+=`<text x="644" y="500" class="leg-t">fabricated by closure (8)</text>`;
+document.getElementById('sat3').innerHTML=fig;
+</script>
+</body>
+</html>

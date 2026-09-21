@@ -1,0 +1,2148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Ana M — Portfolio</title>
+<!-- ============================================================
+     Ana M — portfolio
+     01 this is a test            a-test-cartography.html
+     02 cyberfairy's library      (fiction + iridescent visuals + live catalogue)
+     03 the slop engine           points-of-view.html
+     04 a test cartography        test-cartography.html
+     EDIT: contact line near the bottom (search for you@example.com)
+     ============================================================ -->
+<style>
+:root{
+  --bg0:#17171a; --bg1:#0a0a0b;
+  --ink:#e7e4dc; --soft:#d9d6ce; --mut:#9a978f; --dim:#5b5954; --hair:#26262a;
+  --red:#c96a64; --red-dim:#8a5550;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,'Courier New',monospace;
+  --sans:Roboto,-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;
+  --serif:Georgia,'Times New Roman',serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scrollbar-color:#2b2b2f #0d0d0e}
+body{
+  margin:0;background:linear-gradient(180deg,var(--bg0) 0%,var(--bg1) 100%) fixed;
+  color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--red);color:#0a0a0b}
+::-webkit-scrollbar{width:9px}
+::-webkit-scrollbar-track{background:#0d0d0e}
+::-webkit-scrollbar-thumb{background:#2b2b2f}
+a{color:inherit;text-decoration:none}
+@media (pointer:fine){ body{cursor:none} a,button{cursor:none} }
+
+/* ---------- fixed furniture ---------- */
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+body.plated #field{opacity:.26}
+#grain{
+  position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(rgba(255,255,255,.028) 1px,transparent 1px);
+  background-size:3px 3px;mix-blend-mode:overlay;
+}
+#prog{position:fixed;top:0;left:0;right:0;height:2px;background:rgba(231,228,220,.06);z-index:50}
+#prog i{display:block;height:100%;width:0;background:var(--ink)}
+#hud{
+  position:fixed;top:14px;left:24px;right:24px;z-index:50;pointer-events:none;
+  display:flex;justify-content:space-between;gap:16px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
+}
+#hud b{color:var(--ink);font-weight:500}
+#hud .red{color:var(--red)}
+#reticle{position:fixed;left:0;top:0;z-index:60;pointer-events:none;opacity:0;transition:opacity .25s}
+#reticle i{
+  position:absolute;display:block;width:26px;height:26px;margin:-13px 0 0 -13px;
+  border:1px solid rgba(231,228,220,.28);border-radius:50%;transition:border-color .18s,transform .18s;
+}
+#reticle u{position:absolute;display:block;background:rgba(231,228,220,.5);transition:background .18s}
+#reticle u:nth-child(2){width:1px;height:7px;margin:-16px 0 0 0}
+#reticle u:nth-child(3){width:1px;height:7px;margin:9px 0 0 0}
+#reticle u:nth-child(4){width:7px;height:1px;margin:0 0 0 -16px}
+#reticle u:nth-child(5){width:7px;height:1px;margin:0 0 0 9px}
+#reticle.on i{border-color:var(--red);transform:scale(1.5)}
+#reticle.on u{background:var(--red)}
+#reticle.press i{transform:scale(.7)}
+
+/* ---------- scroll ---------- */
+main{position:relative;z-index:2}
+.wrap{width:min(1240px,100%);margin:0 auto;padding:0 24px}
+
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:14vh 0 12vh}
+.kick{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--dim);margin:0 0 2.4em;
+}
+h1{
+  font-size:clamp(44px,10.5vw,168px);line-height:.86;letter-spacing:-.03em;font-weight:500;
+  margin:0 0 .28em;
+}
+h1 .r{color:var(--red)}
+.lede{max-width:46ch;font-size:clamp(15px,1.5vw,19px);line-height:1.62;color:var(--soft);margin:0 0 2.4em}
+.heroindex{list-style:none;margin:0 0 2.6em;padding:0;max-width:44ch}
+.heroindex li{
+  display:flex;align-items:baseline;gap:14px;padding:11px 0;border-top:1px solid var(--hair);
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink);
+}
+.heroindex li:last-child{border-bottom:1px solid var(--hair)}
+.heroindex li span{color:var(--dim);font-size:9.5px;letter-spacing:.16em}
+.heroindex li em{margin-left:auto;font-style:normal;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.cue{margin-top:3em;font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
+.cue span{display:inline-block;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(5px)}}
+
+/* ---------- index ---------- */
+#index{padding:16vh 0 10vh}
+.shead{
+  display:flex;align-items:baseline;justify-content:space-between;gap:20px;
+  border-bottom:1px solid var(--hair);padding-bottom:12px;margin-bottom:0;
+}
+.shead h2{margin:0;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--mut)}
+.shead em{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--dim);font-style:normal;text-transform:uppercase}
+.row{
+  display:grid;grid-template-columns:52px 1fr auto;gap:20px;align-items:baseline;
+  padding:22px 6px;border-bottom:1px solid var(--hair);position:relative;
+  transition:padding-left .35s cubic-bezier(.2,.8,.2,1);
+}
+.row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--red);
+  transform:scaleY(0);transform-origin:top;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.row:hover{padding-left:20px}
+.row:hover::before{transform:scaleY(1)}
+.row .n{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em}
+.row .t{display:block;font-size:clamp(20px,3.2vw,40px);line-height:1.06;letter-spacing:-.015em;margin:0 0 .5em}
+.row .t .y{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--dim);margin-left:14px;vertical-align:middle}
+.row .s{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0}
+.row .stat{font-family:var(--mono);font-size:10px;line-height:2;color:var(--mut);text-align:right;white-space:nowrap}
+.row .stat .r{color:var(--red)}
+.row:hover .stat{color:var(--ink)}
+@media (max-width:760px){
+  .row{grid-template-columns:36px 1fr;gap:14px}
+  .row .stat{grid-column:2;text-align:left;margin-top:10px}
+}
+
+/* ---------- work sections ---------- */
+.work{padding:14vh 0 14vh;border-top:1px solid var(--hair)}
+.wgrid{display:grid;grid-template-columns:minmax(300px,1fr) minmax(0,1.15fr);gap:clamp(24px,4vw,64px);align-items:start}
+@media (max-width:980px){.wgrid{grid-template-columns:1fr}}
+.wmeta{position:sticky;top:14vh}
+@media (max-width:980px){.wmeta{position:static}}
+.work h3{font-size:clamp(30px,5vw,64px);line-height:.98;letter-spacing:-.025em;font-weight:500;margin:.1em 0 .3em}
+.work .sub{font-family:var(--serif);font-style:italic;font-size:clamp(14px,1.5vw,18px);color:var(--mut);margin:0 0 1.6em}
+.work p.body{font-size:15px;line-height:1.72;color:var(--soft);margin:0 0 1.2em;max-width:56ch}
+.work p.body .r{color:var(--red)}
+.spec{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-family:var(--mono);font-size:10px;
+  letter-spacing:.06em;color:var(--mut);margin:2em 0 0;border-top:1px solid var(--hair);padding-top:16px}
+.spec dt{color:var(--dim);letter-spacing:.16em;text-transform:uppercase}
+.spec dd{margin:0}
+.open{
+  display:inline-flex;align-items:center;gap:12px;margin-top:2.2em;
+  font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  border:1px solid var(--hair);padding:13px 18px;position:relative;overflow:hidden;
+  transition:border-color .3s,color .3s;
+}
+.open span{position:relative;z-index:1}
+.open::after{content:'';position:absolute;inset:0;background:var(--red);transform:translateY(101%);
+  transition:transform .38s cubic-bezier(.2,.8,.2,1)}
+.open:hover{border-color:var(--red);color:#0a0a0b}
+.open:hover::after{transform:translateY(0)}
+.open .ar{transition:transform .3s}
+.open:hover .ar{transform:translateX(5px)}
+
+/* ---------- plates ---------- */
+.plate{
+  position:sticky;top:11vh;height:min(74vh,720px);border:1px solid var(--hair);
+  background:linear-gradient(180deg,rgba(20,20,22,.92),rgba(10,10,11,.92));
+  display:flex;flex-direction:column;overflow:hidden;
+}
+@media (max-width:980px){.plate{position:relative;top:0;height:auto;min-height:64vh}}
+.ptop{
+  display:flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-bottom:1px solid var(--hair);
+  font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);flex:none;
+}
+.ptop .dot{width:6px;height:6px;border-radius:50%;background:#2b2b2f}
+.ptop .dot.r{background:var(--red)}
+.ptop .live{margin-left:auto;color:var(--red);opacity:.85}
+.ptop .ttl{margin-left:6px}
+.pcv{position:relative;flex:1;min-height:0}
+.pcv canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.pbot{flex:none;border-top:1px solid var(--hair);padding:10px 12px;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.1em;color:var(--dim);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.pbot .cap{color:var(--mut);letter-spacing:.06em;line-height:1.5}
+.pbot .num{color:var(--ink);white-space:nowrap}
+.pbot .num .r{color:var(--red)}
+.ticks{display:flex;gap:3px;padding:9px 12px 0;flex:none}
+.ticks b{flex:1;height:2px;background:#2b2b2f;transition:background .25s,transform .25s;cursor:none}
+.ticks b.on{background:var(--red);transform:scaleY(2.5)}
+.ticks b.past{background:#4a4a46}
+.pbtns{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;border-top:1px solid var(--hair);flex:none}
+.pbtns button{
+  font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mut);background:transparent;border:1px solid var(--hair);padding:8px 10px;transition:.18s;
+}
+.pbtns button:hover{color:var(--ink);border-color:var(--ink)}
+.pbtns button.sat:hover{color:var(--red);border-color:var(--red)}
+.pbtns button.void{color:var(--ink);border-color:var(--dim)}
+.pbtns button.void:hover{background:var(--ink);color:#0a0a0b}
+
+/* ---------- cyberfairy's library — dark chapter ---------- */
+.skywrap{
+  position:sticky;top:0;height:100vh;margin-bottom:-100vh;z-index:0;pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 13%,#000 87%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0%,#000 13%,#000 87%,transparent 100%);
+}
+.skywrap canvas{display:block;width:100%;height:100%}
+.chapter{position:relative;z-index:2;padding:20vh 0 18vh}
+.chapin{position:relative;width:min(760px,100%);margin:0 auto;padding:0 26px}
+.chapter .kick{color:var(--dim)}
+.chapter h3{
+  font-family:var(--serif);font-weight:400;font-style:italic;color:var(--ink);
+  font-size:clamp(36px,6.6vw,86px);line-height:1.02;letter-spacing:-.022em;margin:.16em 0 .3em;
+}
+.chapter .sub{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);margin:0 0 3.6em;line-height:2;
+}
+.chapter .statement{
+  font-family:var(--serif);font-size:clamp(16px,1.9vw,23px);line-height:1.62;color:var(--soft);
+  max-width:52ch;margin:0 0 5em;padding-left:22px;border-left:1px solid var(--hair);
+}
+.chapter .statement .src{
+  display:block;margin-top:1.2em;font-family:var(--mono);font-size:8.5px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--dim);font-style:normal;
+}
+.chapgrid{
+  position:relative;z-index:2;display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,780px) minmax(0,1fr);
+  gap:clamp(10px,1.6vw,34px);align-items:start;width:min(1700px,100%);margin:0 auto;padding:0 18px;
+}
+.rail{display:flex;flex-direction:column;gap:15vh;padding-top:4vh}
+.rail img{display:block;width:100%;height:auto;mix-blend-mode:screen;animation:floaty 26s ease-in-out infinite}
+.rail-r{margin-top:20vh}
+.rail img:nth-child(2){width:84%;align-self:flex-end;animation-duration:32s;animation-delay:-7s}
+.rail img:nth-child(3){width:92%;animation-duration:22s;animation-delay:-12s}
+.rail img:nth-child(4){width:76%;align-self:center;animation-duration:35s;animation-delay:-3s}
+@media (max-width:1180px){
+  .chapgrid{grid-template-columns:1fr;padding:0}
+  .rail{display:none}
+}
+.chapin{position:relative;width:100%;margin:0;padding:0 26px}
+
+.bigfairy{margin:12vh 0 4vh}
+.bigfairy img{display:block;width:100%;height:auto;mix-blend-mode:screen}
+.bigfairy figcaption{
+  margin-top:16px;font-family:var(--mono);font-size:8.5px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--dim);text-align:right;
+}
+.note a{border-bottom:1px solid rgba(201,106,100,.45);transition:border-color .2s,color .2s}
+.note a:hover{color:var(--ink);border-color:var(--red)}
+
+.leaves{display:flex;flex-direction:column;gap:2.4em;margin-top:6vh}
+.leaf{
+  margin:0;padding:0;max-width:46ch;
+  opacity:0;transform:translateY(30px);
+  transition:opacity 1.2s cubic-bezier(.2,.8,.2,1),transform 1.2s cubic-bezier(.2,.8,.2,1);
+}
+.leaf:nth-child(even){margin-left:auto;text-align:right}
+.leaf.in{opacity:1;transform:none}
+.leafin{animation:drift 13s ease-in-out infinite}
+.leaf:nth-child(even) .leafin{animation-duration:17s;animation-direction:reverse}
+@keyframes drift{50%{transform:translate3d(0,-11px,0)}}
+.leaf p{
+  margin:0;font-family:var(--serif);font-size:clamp(17px,2.15vw,26px);line-height:1.58;
+  color:var(--soft);
+}
+.leaf .src{
+  display:block;margin-top:1.3em;font-family:var(--mono);font-size:8.5px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--dim);
+}
+.leaf.last p{color:var(--ink);font-style:italic}
+
+.cat{margin-top:14vh;border-top:1px solid var(--hair);padding-top:26px}
+.cat h4{
+  margin:0 0 10px;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--mut);
+}
+.cat .hint{font-family:var(--serif);font-style:italic;font-size:15.5px;line-height:1.7;color:var(--dim);margin:0 0 20px;max-width:48ch}
+.catcv{position:relative;height:min(64vh,580px);border:1px solid var(--hair);background:rgba(20,20,22,.5)}
+.catcv canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.catfoot{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  padding-top:12px;font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);
+}
+.catbtns{display:flex;gap:8px}
+.catbtns button{
+  font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--mut);background:transparent;border:1px solid var(--hair);padding:9px 12px;transition:.2s;
+}
+.catbtns button:hover{color:var(--ink);border-color:var(--ink)}
+.chapter .spec dt{color:var(--dim)}
+.chapter .spec dd{color:var(--mut)}
+
+/* ---------- work 05 — liminality ---------- */
+.liminal h3{margin-bottom:.24em}
+.lcols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,60px);align-items:start;margin:0 0 9vh}
+@media (max-width:900px){.lcols{grid-template-columns:1fr}}
+.lfig{margin:0}
+.lfig img{display:block;width:100%;height:auto;mix-blend-mode:screen}
+.lfig figcaption{
+  margin-top:14px;font-family:var(--mono);font-size:8.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--dim);
+}
+.spaces{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.6vw,20px);margin:0 0 9vh}
+@media (max-width:700px){.spaces{grid-template-columns:1fr}}
+.space{margin:0;border:1px solid var(--hair)}
+.space img{display:block;width:100%;height:auto}
+.space figcaption{
+  padding:11px 13px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);border-top:1px solid var(--hair);
+}
+.space figcaption b{color:var(--mut);font-weight:600}
+.space.s1{grid-column:1 / -1}
+.spiralrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,60px);align-items:center}
+@media (max-width:900px){.spiralrow{grid-template-columns:1fr}}
+.body.closing{font-family:var(--serif);font-size:clamp(19px,2.4vw,30px);line-height:1.5;color:var(--soft);margin:0}
+.lactions{display:flex;gap:12px;flex-wrap:wrap;margin-top:2.2em}
+.liminal code{font-family:var(--mono);font-size:.92em;color:var(--mut);background:rgba(231,228,220,.05);padding:1px 5px}
+
+/* ---------- work 06 — cell music ---------- */
+.cells h3{font-size:clamp(28px,4.6vw,58px);line-height:1.06;letter-spacing:-.02em;margin:.12em 0 .3em}
+.ccols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,60px);align-items:start}
+@media (max-width:900px){.ccols{grid-template-columns:1fr}}
+.cright{display:flex;flex-direction:column;gap:clamp(12px,1.6vw,20px)}
+.cfigure{margin:0;border:1px solid var(--hair)}
+.cfigure video,.cfigure img{display:block;width:100%;height:auto;background:#000}
+.cfigure figcaption{
+  padding:11px 13px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);border-top:1px solid var(--hair);
+}
+.cfigure figcaption b{color:var(--mut);font-weight:600}
+.cpair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.6vw,20px)}
+
+.sound{border:1px solid var(--hair);padding:14px 16px;margin:0 0 2.2em;background:rgba(20,20,22,.4)}
+.soundhead{
+  font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:14px;
+}
+.soundhead .live{color:var(--red)}
+.soundrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sound .vbtn,.sound .pbtn{
+  font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--mut);background:transparent;border:1px solid var(--hair);padding:9px 12px;transition:.18s;
+}
+.sound .vbtn:hover,.sound .pbtn:hover{color:var(--ink);border-color:var(--ink)}
+.sound .vbtn.on{color:var(--red);border-color:var(--red)}
+.sound .pbtn{color:var(--ink);border-color:var(--dim);min-width:82px}
+.sound .stime{margin-left:auto;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--dim)}
+.srow{display:flex;align-items:center;gap:12px;margin-top:14px}
+.srow label{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.srow input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:2px;background:#2b2b2f;outline:none}
+.srow input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:11px;height:11px;border-radius:50%;background:var(--red);cursor:pointer}
+.srow input[type=range]::-moz-range-thumb{width:11px;height:11px;border:0;border-radius:50%;background:var(--red);cursor:pointer}
+.srow #cellRateVal{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--mut);min-width:44px;text-align:right}
+.sbar{height:2px;background:#2b2b2f;margin-top:14px;overflow:hidden}
+.sbar i{display:block;height:100%;width:0;background:var(--red)}
+
+/* ---------- marquee + colophon ---------- */
+#colophon{padding:12vh 0 8vh}
+.cgrid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(24px,4vw,64px)}
+@media (max-width:860px){.cgrid{grid-template-columns:1fr}}
+.verdict{border:1px solid var(--dim);padding:16px 18px;font-family:var(--mono);font-size:10.5px;line-height:2;color:var(--mut)}
+.verdict b{color:var(--red);font-weight:600}
+.verdict .k{color:var(--ink)}
+.note{font-family:var(--mono);font-size:9.5px;line-height:1.9;color:var(--dim);margin:18px 0 0}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--hair);
+  margin-top:9vh;padding-top:18px;font-family:var(--mono);font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--dim)}
+.foot a{border-bottom:1px solid transparent;transition:.2s}
+.foot a:hover{color:var(--ink);border-color:var(--red)}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .cue span{animation:none}
+}
+</style>
+</head>
+<body>
+
+<canvas id="field" aria-hidden="true"></canvas>
+<div id="grain" aria-hidden="true"></div>
+<div id="prog"><i id="progFill"></i></div>
+<div id="hud">
+  <span><b>Ana M</b> <span style="opacity:.5">—</span> PORTFOLIO</span>
+  <span><span id="hudIdx">00</span> / 06 &nbsp;·&nbsp; <span id="hudMode" class="red">PORTFOLIO</span></span>
+</div>
+<div id="reticle" aria-hidden="true"><i></i><u></u><u></u><u></u><u></u></div>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section id="hero">
+    <div class="wrap">
+      <p class="kick">portfolio</p>
+      <h1>ANA M</h1>
+      <p class="lede">
+        Ana Marinković (b. 1997) is a transdisciplinary artist, researcher, and independent
+        critic working at the intersections of contemporary art, science, and technology. Her
+        practice moves between artistic production such as video, performance, installation, and
+        sound, and critical research into what it means to produce knowledge, to map a field,
+        and to think beyond the human into anti-human.
+      </p>
+      <ol class="heroindex">
+        <li><span>01</span> this is a test <em>cartography</em></li>
+        <li><span>02</span> the slop engine <em>simulation</em></li>
+        <li><span>03</span> a test cartography <em>derivation</em></li>
+        <li><span>04</span> cyberfairy's library <em>fiction</em></li>
+        <li><span>05</span> liminality mechanisms <em>paper &amp; playable space</em></li>
+        <li><span>06</span> did you know that mice watch the matrix? <em>imaging &amp; sonification</em></li>
+      </ol>
+      <p class="cue"><span>↓</span> scroll to enter the works</p>
+    </div>
+  </section>
+
+  <!-- ============ INDEX ============ -->
+  <section id="index">
+    <div class="wrap">
+      <div class="shead"><h2>works</h2><em>six works · 2026</em></div>
+      <a class="row" href="#w1" data-hud="01">
+        <span class="n">01</span>
+        <span>
+          <span class="t">this is a test<span class="y">2026</span></span>
+          <span class="s">cartography · scroll essay · live stage</span>
+        </span>
+        <span class="stat">|R| 7 → 15<br><span class="r">Δ = 8 forced</span></span>
+      </a>
+      <a class="row" href="#w2" data-hud="02">
+        <span class="n">02</span>
+        <span>
+          <span class="t">the slop engine<span class="y">2026</span></span>
+          <span class="s">simulation · presheaf test · canvas</span>
+        </span>
+        <span class="stat">views 0 → 30<br><span class="r">totalisable: no</span></span>
+      </a>
+      <a class="row" href="#w3" data-hud="03">
+        <span class="n">03</span>
+        <span>
+          <span class="t">a test cartography<span class="y">2026</span></span>
+          <span class="s">derivation · closure · three views</span>
+        </span>
+        <span class="stat">cl(R) = R ∪ … ∪ R⁵<br><span class="r">no zero object</span></span>
+      </a>
+      <a class="row" href="#w4" data-hud="04">
+        <span class="n">04</span>
+        <span>
+          <span class="t">cyberfairy's library<span class="y">2026</span></span>
+          <span class="s">fiction · iridescent visuals · live catalogue</span>
+        </span>
+        <span class="stat">no walls · no shelves<br><span class="r">point zero</span></span>
+      </a>
+      <a class="row" href="#w5" data-hud="05">
+        <span class="n">05</span>
+        <span>
+          <span class="t">liminality mechanisms<span class="y">2026</span></span>
+          <span class="s">paper · playable space · four spaces</span>
+        </span>
+        <span class="stat">no destination<br><span class="r">the transition never completes</span></span>
+      </a>
+      <a class="row" href="#w6" data-hud="06">
+        <span class="n">06</span>
+        <span>
+          <span class="t">did you know that mice watch the matrix?<span class="y">2026</span></span>
+          <span class="s">imaging · sonification · two voices</span>
+        </span>
+        <span class="stat">events → notes<br><span class="r">1062 s of visual cortex</span></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ WORK 01 ============ -->
+  <section class="work" id="w1" data-work="1" data-mode="FORCED · 15" data-layout="1">
+    <div class="wrap wgrid">
+      <div class="wmeta">
+        <p class="kick">01 — cartography · 2026</p>
+        <h3>this is a test</h3>
+        <p class="sub">test on modelling art field</p>
+        <p class="body">
+          The positions are objects — artist, gallery, critic, public, collector — and the
+          artwork is the arrow between them. A category must compose: a work goes
+          artist→gallery, another gallery→critic, so the axioms demand a third,
+          artist→critic, whether or not any work made that move.
+        </p>
+        <p class="body">
+          Force every such composite and <span class="r">7 relations become 15</span>. Eight are
+          fabricated: realised by no artwork, demanded by the rule. The model works — and that is
+          the problem. A clean fit is a proof of what had to be forced, not an orderly field.
+        </p>
+        <p class="body">
+          Developed under the guidance of <span class="r">Edgar Venezuela, PhD</span>, who
+          introduced the categorical reading of the field and supervised the derivation.
+        </p>
+        <dl class="spec">
+          <dt>medium</dt><dd>scroll-driven essay · SVG stage · live embed · 12 beats</dd>
+          <dt>result</dt><dd>cl(R) = 15 · Δ = 8 · total order · no zero object</dd>
+          <dt>guidance</dt><dd>Edgar Venezuela, PhD — mathematician</dd>
+          <dt>status</dt><dd>ongoing</dd>
+        </dl>
+        <a class="open" href="a-test-cartography.html" target="_blank" rel="noopener">
+          <span>open work</span><span class="ar">→</span>
+        </a>
+      </div>
+
+      <div class="plate" data-plate="1">
+        <div class="ptop"><span class="dot r"></span><span class="dot"></span><span class="dot"></span>
+          <span class="ttl">this is a test — stage</span><span class="live">● live</span></div>
+        <div class="pcv"><canvas id="p1"></canvas></div>
+        <div class="ticks" id="p1ticks"></div>
+        <div class="pbot">
+          <span class="cap" id="p1cap">—</span>
+          <span class="num" id="p1num">—</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORK 02 — the slop engine ============ -->
+  <section class="work" id="w2" data-work="2" data-mode="OPEN · PRESHEAF" data-layout="2">
+    <div class="wrap wgrid">
+      <div class="wmeta">
+        <p class="kick">02 — simulation · 2026</p>
+        <h3>the slop engine</h3>
+        <p class="sub">post · reshare · opening · void</p>
+        <p class="body">
+          Now the field opens. The work stops terminating at the public — there is the opening,
+          the Instagram post, the reshares of the post, the resale. Work keeps circulating.
+          Four views of one work, and no two agree on title, price or provenance.
+        </p>
+        <p class="body">
+          A sheaf wants views that match on overlaps and glue into one. These don't. Add a view and
+          resolution falls: <span class="r">a presheaf that will not glue.</span> Visibility becomes
+          more circulation, not an end — so the network adds a terminal of its own: the void,
+          where the over-circulated work empties out.
+        </p>
+        <dl class="spec">
+          <dt>medium</dt><dd>interactive force simulation · canvas · presheaf test</dd>
+          <dt>result</dt><dd>views 0→30 · conflicts 0→46 · totalisable: no</dd>
+          <dt>status</dt><dd>playable</dd>
+        </dl>
+        <a class="open" href="points-of-view.html" target="_blank" rel="noopener">
+          <span>play the work</span><span class="ar">→</span>
+        </a>
+      </div>
+
+      <div class="plate" data-plate="2">
+        <div class="ptop"><span class="dot r"></span><span class="dot"></span><span class="dot"></span>
+          <span class="ttl">the slop engine — model</span><span class="live">● live</span></div>
+        <div class="pcv"><canvas id="p2"></canvas></div>
+        <div class="pbtns" id="p2btns">
+          <button data-k="instagram" class="sat">+ ig post</button>
+          <button data-k="reshare" class="sat">+ reshare</button>
+          <button data-k="opening" class="sat">+ opening</button>
+          <button data-k="resale" class="sat">+ resale</button>
+          <button data-k="void" class="void">+ the void</button>
+          <button data-k="reset">reset</button>
+        </div>
+        <div class="pbot">
+          <span class="cap">drag to pan · scroll to zoom · click a work</span>
+          <span class="num" id="p2num">views <b>0</b> · conflicts <b>0</b> · <b>totalisable</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ WORK 03 — a test cartography ============ -->
+  <section class="work" id="w3" data-work="3" data-mode="TOTAL · 15" data-layout="3">
+    <div class="wrap wgrid">
+      <div class="wmeta">
+        <p class="kick">03 — derivation · 2026</p>
+        <h3>a test cartography</h3>
+        <p class="sub">closure, computed</p>
+        <p class="body">
+          The same field, set down as computation. cl(R) = R ∪ R² ∪ R³ ∪ R⁴ ∪ R⁵. Two-step routes
+          close six pairs the field never marks directly; three steps close the last two. Longer
+          routes only revisit what is already registered — the height is 5.
+        </p>
+        <p class="body">
+          Seven given, fifteen forced. Because every forward pair is present the order is
+          <span class="r">total</span>, not merely partial: artist below all, public above all.
+          A thin poset with an initial and a terminal and nothing that looks both ways —
+          no centre, surviving the forcing.
+        </p>
+        <dl class="spec">
+          <dt>medium</dt><dd>static derivation · SVG · three views of one field</dd>
+          <dt>guidance</dt><dd>Edgar Venezuela, PhD — mathematician</dd>
+          <dt>status</dt><dd>archived</dd>
+        </dl>
+        <div class="verdict">
+          6 objects · 7 arrows · Δ = <b>8 forced-fabricated</b> · no centre<br>
+          <span class="k">⊢</span> initial = ARTIST ≠ terminal = VOID ⟹ <b>no zero object</b><br>
+          F → F⁺ : <b>non-totalisability</b> — next register, not this computation.
+        </div>
+        <a class="open" href="test-cartography.html" target="_blank" rel="noopener">
+          <span>open derivation</span><span class="ar">→</span>
+        </a>
+      </div>
+
+      <div class="plate" data-plate="3">
+        <div class="ptop"><span class="dot r"></span><span class="dot"></span><span class="dot"></span>
+          <span class="ttl">a test cartography — closure</span><span class="live">● live</span></div>
+        <div class="pcv"><canvas id="p3"></canvas></div>
+        <div class="pbtns" id="p3btns">
+          <button data-step="1">r¹ · 7</button>
+          <button data-step="2">r² · 13</button>
+          <button data-step="3">r³ · 15</button>
+          <button data-step="4">r⁴ · 15</button>
+          <button data-step="5">r⁵ · 15</button>
+        </div>
+        <div class="pbot">
+          <span class="cap" id="p3cap">step 1 — the field as given</span>
+          <span class="num" id="p3num">|R¹| = 7</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORK 04 — cyberfairy's library (the light chapter) ============ -->
+  <section class="chapter" id="w4" data-work="4" data-mode="IN THE CLOUDS · ∞">
+    <div class="skywrap" aria-hidden="true"><canvas id="sky"></canvas></div>
+    <div class="chapgrid">
+      <aside class="rail rail-l" aria-hidden="true">
+        <img src="cyberfairy-form-01.png" alt="">
+        <img src="cyberfairy-form-05.png" alt="">
+        <img src="cyberfairy-form-02.png" alt="">
+        <img src="cyberfairy-form-07.png" alt="">
+      </aside>
+      <div class="chapin">
+
+      <p class="kick">04 — fiction &amp; visuals · 2026</p>
+      <h3>cyberfairy's library</h3>
+      <p class="sub">the librarian in the space between the material world and the universe</p>
+
+      <blockquote class="statement">
+        What moved me most was not whether the Akashic records exist in a literal sense, but the
+        suggestion that information does not need to be fixed to paper, buildings or devices to
+        survive. That realization became the foundation of my own idea of a library.
+        <span class="src">Future Libraries</span>
+      </blockquote>
+
+      <div class="leaves">
+        <figure class="leaf"><div class="leafin">
+          <p>She lives in the perfect space between the material world and the universe. She looks
+          like a holy person from an intergalactic church. Dressed in modesty with wings and
+          sunglasses.</p>
+          <span class="src">Point Zero — Cyber Fairy</span>
+        </div></figure>
+
+        <figure class="leaf"><div class="leafin">
+          <p>I envision the library somewhere in the clouds, at a precise distance between the
+          material world and the universe, suspended in between, on a spectrum we are unable to
+          perceive.</p>
+          <span class="src">Future Libraries</span>
+        </div></figure>
+
+        <figure class="leaf"><div class="leafin">
+          <p>Nothing is forbidden in Cyber Fairy's library as the library is an infinite space
+          without any physical borders.</p>
+          <span class="src">Point Zero</span>
+        </div></figure>
+
+        <figure class="leaf"><div class="leafin">
+          <p>There are no walls, no shelves, no chairs and no designated reading spaces.
+          Introducing walls into this kind of library would feel fundamentally wrong.</p>
+          <span class="src">Future Libraries</span>
+        </div></figure>
+
+        <figure class="leaf"><div class="leafin">
+          <p>The library is also a graveyard of souls that got lured in but eventually given up,
+          despite trying their best. Cyber Fairy preserves their souls like she preserves thoughts
+          in her library.</p>
+          <span class="src">Point Zero</span>
+        </div></figure>
+
+        <figure class="leaf"><div class="leafin">
+          <p>I am both the creator of the library and its greatest threat. I am, ultimately, the
+          enemy of my own library.</p>
+          <span class="src">Future Libraries</span>
+        </div></figure>
+
+        <figure class="leaf last"><div class="leafin">
+          <p>Being nothing is freeing. Nothingness is completely undetermined, it's neither scary
+          nor good. It's the perfect point where I'm nothing at all, just a passenger soul in the
+          making, or disappearing. That's where I'd like to be, indefinitely. Point zero.</p>
+          <span class="src">Point Zero</span>
+        </div></figure>
+      </div>
+
+      <figure class="bigfairy">
+        <img src="cyberfairy-row.png" alt="cyber-fairy land — a row of melted, marbled fairy forms" loading="lazy">
+        <figcaption>cyber-fairy land — the drawing, slide 08</figcaption>
+      </figure>
+
+      <!-- the catalogue — click a thought to open its next tabs -->
+      <div class="cat" id="cat">
+        <h4>the catalogue</h4>
+        <p class="hint">Your unconscious chooses what you feel compelled to know. Click a thought
+        to open its next tabs — the chain can continue endlessly, or you can pause it at any
+        moment and return later.</p>
+        <div class="catcv"><canvas id="catcv"></canvas></div>
+        <div class="catfoot">
+          <span id="catCount">1 tab open</span>
+          <span class="catbtns">
+            <button id="catMore">open a tab</button>
+            <button id="catReset">close all</button>
+          </span>
+        </div>
+      </div>
+
+      <dl class="spec">
+        <dt>medium</dt><dd>fiction · iridescent visuals · interactive catalogue · web</dd>
+        <dt>texts</dt><dd>Point Zero · Future Libraries</dd>
+        <dt>visuals</dt><dd>cyber-fairy land — slides 08–09</dd>
+        <dt>status</dt><dd>ongoing</dd>
+      </dl>
+      <a class="open" href="#cat">
+        <span>open the catalogue</span><span class="ar">→</span>
+      </a>
+      </div>
+      <aside class="rail rail-r" aria-hidden="true">
+        <img src="cyberfairy-form-03.png" alt="">
+        <img src="cyberfairy-form-08.png" alt="">
+        <img src="cyberfairy-form-04.png" alt="">
+        <img src="cyberfairy-form-06.png" alt="">
+      </aside>
+    </div>
+  </section>
+
+
+
+  <!-- ============ WORK 05 — liminality mechanisms ============ -->
+  <section class="work liminal" id="w5" data-work="5" data-mode="PERMANENT LIMINALITY">
+    <div class="wrap">
+      <p class="kick">05 — paper &amp; playable space · 2026</p>
+      <h3>liminality mechanisms</h3>
+      <p class="sub">the fold, the grid, and the void</p>
+
+      <div class="lcols">
+        <div>
+          <p class="body">
+            Transit cuts through striated space to open a temporary pocket of what Deleuze and
+            Guattari call smooth space. For a certain amount of time, between point A and point B,
+            you are <span class="r">off the grid</span>.
+          </p>
+          <p class="body">
+            The initial intuition drags us toward the linear: you enter at A, travel a corridor,
+            exit at B as a slightly altered person. But B does not exist. There was only ever A,
+            and B is just the other side of A. You can't see who you are becoming while you become
+            it — identity is strictly retroactive.
+          </p>
+          <p class="body">
+            Classic anthropology treated the in-between as a problem to be escaped. But coming into
+            a stable position is also an enclosure: to settle into one state is to foreclose the
+            others. To choose permanent liminality is to live an unscripted existence as something
+            cathartic rather than a transitional crisis.
+          </p>
+          <p class="body">
+            <span class="r">LIMINAL EXPRESS</span> is the practice to that paper. You board and walk —
+            the subway, the void, the backrooms, an endless suburbia — with no objective and no
+            destination, looping. Walking these spaces aimlessly is the simulation of permanent
+            liminality: the transition that never completes.
+          </p>
+          <dl class="spec">
+            <dt>paper</dt><dd>Liminality Mechanisms: the Fold, the Grid, and the Void</dd>
+            <dt>game</dt><dd>LIMINAL EXPRESS — first person · browser · four spaces</dd>
+            <dt>spaces</dt><dd>subway · void · backrooms · suburbia</dd>
+            <dt>controls</dt><dd>WASD move · shift run · space jump · E open door · click to look</dd>
+            <dt>status</dt><dd>playable</dd>
+          </dl>
+          <div class="lactions">
+            <a class="open" href="liminal-express.html" target="_blank" rel="noopener">
+              <span>play liminal express</span><span class="ar">→</span>
+            </a>
+            <a class="open" href="liminality-mechanisms.pdf" target="_blank" rel="noopener">
+              <span>read the paper</span><span class="ar">→</span>
+            </a>
+          </div>
+          <p class="note" id="serverNote">
+            the game is built from ES modules, so it runs from a local server rather than a
+            double-clicked file — start it with <code>ruby serve.rb</code> and play at
+            <code>127.0.0.1:5173/liminal-express.html</code>. the paper opens directly.
+          </p>
+        </div>
+
+        <figure class="lfig">
+          <img src="liminality-fold.png" alt="Diagram: liminality as method — contingency, retroactive freedom, freedom is a constant struggle">
+          <figcaption>from the paper — liminality as method</figcaption>
+        </figure>
+      </div>
+
+      <div class="spaces">
+        <figure class="space s1">
+          <img src="game-title.png" alt="LIMINAL EXPRESS title screen — click to board">
+          <figcaption><b>liminal express</b> — click to board</figcaption>
+        </figure>
+        <figure class="space">
+          <img src="game-subway.png" alt="Inside the subway car: red seats, chrome poles, black windows, ceiling lights">
+          <figcaption><b>the subway</b> — a moving creation chamber</figcaption>
+        </figure>
+        <figure class="space">
+          <img src="game-backrooms.png" alt="Mono-yellow backrooms corridor, damp carpet, fluorescent ceiling panels">
+          <figcaption><b>the backrooms</b> — damp carpet, no entities</figcaption>
+        </figure>
+        <figure class="space">
+          <img src="game-suburbia.png" alt="An endless suburb of identical houses and striped lawns">
+          <figcaption><b>suburbia</b> — you cannot enter any house</figcaption>
+        </figure>
+      </div>
+
+      <div class="spiralrow">
+        <figure class="lfig">
+          <img src="liminality-spiral.png" alt="Diagram: concentric rings — freedom, becoming, liminality, contingency, subjectivity, multiplicity">
+          <figcaption>from the paper — the spiral</figcaption>
+        </figure>
+        <p class="body closing">
+          What internet lore turned into a horror scenario might just be
+          <span class="r">a radical creative state</span>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORK 06 — cell music (mice) ============ -->
+  <section class="work cells" id="w6" data-work="6" data-mode="CELL MUSIC">
+    <div class="wrap">
+      <p class="kick">06 — imaging &amp; sonification · 2026</p>
+      <h3>did you know that mice watch the matrix?</h3>
+      <p class="sub">two-photon imaging of a mouse visual cortex, played back as music</p>
+
+      <div class="ccols">
+        <div>
+          <p class="body">
+            A mouse watches thirty-second movie clips — ten of them, over and over, for eighteen
+            minutes — while a two-photon microscope records the calcium activity of individual
+            neurons in its visual cortex. <span class="r">Every bright cell is a neuron firing.</span>
+          </p>
+          <p class="body">
+            The recording is also a score. Each detected event in each cell becomes a note: the
+            cell's position on the sensor sets its pitch, its trace sets the rhythm. Nothing is
+            composed — the music is what the brain was already doing while it watched.
+          </p>
+
+          <div class="sound" id="cellSound">
+            <div class="soundhead"><span class="live">●</span> cell music — our own program · the same cells, two voices</div>
+            <div class="soundrow">
+              <button class="vbtn on" data-voice="techno">techno</button>
+              <button class="vbtn" data-voice="piano">piano</button>
+              <button class="pbtn" id="cellPlay" aria-label="play">▶ play</button>
+              <span class="stime" id="cellTime">0:00 / 0:20</span>
+            </div>
+            <div class="srow">
+              <label for="cellRate">tempo</label>
+              <input id="cellRate" type="range" min="0.5" max="1.5" step="0.05" value="1">
+              <span id="cellRateVal">1.00×</span>
+            </div>
+            <div class="sbar"><i id="cellBar"></i></div>
+          </div>
+
+          <dl class="spec">
+            <dt>data</dt><dd>two-photon calcium imaging · mouse visual cortex</dd>
+            <dt>experiment</dt><dd>ESYB190 · 10 September 2026 · 1062 s</dd>
+            <dt>stimulus</dt><dd>10 movie clips · 30 s each · repeated</dd>
+            <dt>sonification</dt><dd>events → notes · Cell Music — our own program, built custom</dd>
+            <dt>collaboration</dt><dd>Yannick Bollman</dd>
+            <dt>status</dt><dd>in progress</dd>
+          </dl>
+          <p class="note">
+            the twenty seconds above are an excerpt from the full ten-minute render — the same
+            events, two voices, and a tempo control for when the cells run too fast.
+          </p>
+        </div>
+
+        <div class="cright">
+          <figure class="cfigure">
+            <video src="cell-imaging-green.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            <figcaption><b>the recording</b> — green fluorescent channel · 512 × 512 · 30 fps</figcaption>
+          </figure>
+          <figure class="cfigure">
+            <div class="cpair">
+              <img src="cell-frame-a.jpg" alt="Raw two-photon image of neurons on black">
+              <img src="cell-green-95.jpg" alt="The same field rendered in green fluorescence">
+            </div>
+            <figcaption><b>raw and green</b> — the same field, the same moment</figcaption>
+          </figure>
+          <figure class="cfigure">
+            <img src="cell-frame-stack.jpg" alt="Averaged stack of the imaging field">
+            <figcaption><b>the field, averaged</b> — every mapped cell at once</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COLOPHON ============ -->
+  <section id="colophon">
+    <div class="wrap cgrid">
+      <div>
+        <p class="kick">colophon</p>
+        <p class="body" style="font-size:15px;line-height:1.72;color:var(--soft);margin:0">
+          Works, papers and code by Ana Marinković.
+          Everything here is hand-written HTML, canvas and SVG — no frameworks, no build step.
+        </p>
+        <p class="note">
+          01 this is a test — cartography · guidance: Edgar Venezuela, PhD<br>
+          02 the slop engine — simulation<br>
+          03 a test cartography — derivation · guidance: Edgar Venezuela, PhD<br>
+          04 cyberfairy's library — fiction · visuals: cyber-fairy land<br>
+          05 liminality mechanisms — paper &amp; playable space · LIMINAL EXPRESS<br>
+          06 did you know that mice watch the matrix? — two-photon imaging · sonification
+        </p>
+      </div>
+      <div>
+        <p class="kick">contact</p>
+        <p class="body" style="font-size:15px;line-height:1.72;color:var(--soft);margin:0 0 1.4em">
+          Barcelona, Spain
+        </p>
+        <p class="note">
+          <a href="tel:+34666202843">+34 666 202 843</a><br>
+          <a href="mailto:anksye@tuta.io">anksye@tuta.io</a><br>
+          <a href="mailto:ana.marinkovic@thenewcentre.org">ana.marinkovic@thenewcentre.org</a><br>
+          ORCID <a href="https://orcid.org/0009-0007-5562-3140" target="_blank" rel="noopener">0009-0007-5562-3140</a>
+        </p>
+        <p class="note">
+          <a href="portfolio.pdf" target="_blank" rel="noopener">portfolio (PDF)</a> · CV and full documentation on request.
+        </p>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="foot">
+        <span>Ana M — Portfolio</span>
+        <span>made by hand · html · canvas · svg</span>
+        <a href="portfolio.pdf" target="_blank" rel="noopener">portfolio (PDF)</a> &nbsp;·&nbsp; <a href="#hero">↑ back to top</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+'use strict';
+/* ============================================================
+   utilities
+   ============================================================ */
+const TAU = Math.PI * 2;
+const clamp = (v,a,b) => v < a ? a : v > b ? b : v;
+const lerp  = (a,b,t) => a + (b - a) * t;
+const smooth = (e0,e1,x) => { const t = clamp((x - e0) / (e1 - e0), 0, 1); return t * t * (3 - 2 * t); };
+const $  = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FINE = matchMedia('(pointer:fine)').matches;
+const INK = '#e7e4dc', MUT = '#9a978f', DIM = '#5b5954', RED = '#c96a64', HAIR = '#26262a';
+const MONO = "ui-monospace,SFMono-Regular,Menlo,Consolas,monospace";
+
+function fitCanvas(cv){
+  const ctx = cv.__ctx || (cv.__ctx = cv.getContext('2d'));
+  let w = cv.__w, h = cv.__h;
+  if (w == null){                        /* measure once; resize listener re-measures */
+    const r = cv.getBoundingClientRect();
+    w = cv.__w = r.width; h = cv.__h = r.height;
+  }
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  const W = Math.max(1, Math.round(w * dpr)), H = Math.max(1, Math.round(h * dpr));
+  if (cv.width !== W || cv.height !== H){ cv.width = W; cv.height = H; }
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  return { ctx, w, h };
+}
+function remeasure(){
+  [$('#field'), $('#sky'), $('#p1'), $('#p2'), $('#p3'), $('#catcv')].forEach(cv => {
+    if (cv){ cv.__w = cv.__h = null; }
+  });
+  catFit();
+  p1Draw(); p2Frame(); p3Draw(); skyFrame(); catFrame();
+}
+
+/* ============================================================
+   the field — one graph, four layouts, seven given / eight forced
+   ============================================================ */
+const IDS = ['artist','gallery','critic','public','collector','void'];
+const LABEL = { artist:'ARTIST', gallery:'GALLERY', critic:'CRITIC', public:'PUBLIC', collector:'COLLECTOR', void:'VOID' };
+
+const LAYOUTS = [
+  /* 0 — as given: dispersed */
+  { artist:[.17,.70], gallery:[.37,.26], critic:[.55,.63], public:[.80,.22], collector:[.63,.86], void:[.93,.50] },
+  /* 1 — as forced: the ladder / total order */
+  { artist:[.10,.78], gallery:[.26,.69], critic:[.42,.60], public:[.58,.51], collector:[.74,.42], void:[.90,.33] },
+  /* 2 — the field opens: a network past the public */
+  { artist:[.09,.50], gallery:[.25,.26], critic:[.41,.72], public:[.57,.30], collector:[.73,.70], void:[.91,.44] },
+  /* 3 — the computation: pure line */
+  { artist:[.11,.50], gallery:[.266,.50], critic:[.422,.50], public:[.578,.50], collector:[.734,.50], void:[.90,.50] }
+];
+
+/* 7 given: the spine artist→gallery→critic→public→collector→void
+   plus two skips — gallery→public (past the critic) and public→void (past the collector).
+   Closure: |R|=7 → |R²|=13 (+6) → |R³|=15 (+2) → |R⁴|=|R⁵|=15 (+0). Δ = 8. Total order. */
+const GIVEN = [
+  ['artist','gallery'],['gallery','critic'],['critic','public'],
+  ['public','collector'],['collector','void'],
+  ['gallery','public'],['public','void']
+];
+const FORCED = [
+  ['artist','critic'],['artist','public'],['artist','collector'],['artist','void'],
+  ['gallery','collector'],['gallery','void'],
+  ['critic','collector'],['critic','void']
+];
+
+const Field = {
+  cv:null, ctx:null, w:0, h:0,
+  p:0, ps:0, t:0, mx:-1e4, my:-1e4, hover:null, armed:false, want:0, presence:0,
+  nodes:[]
+};
+
+function fieldLayout(t){
+  const segs = [[0,.20],[.20,.46],[.46,.72],[.72,1]];
+  let a = LAYOUTS[0], b = LAYOUTS[0], k = 0;
+  for (let i = 0; i < segs.length; i++){
+    if (t <= segs[i][1] || i === segs.length - 1){
+      a = LAYOUTS[i]; b = LAYOUTS[Math.min(i + 1, LAYOUTS.length - 1)];
+      k = smooth(segs[i][0], segs[i][1], t); break;
+    }
+  }
+  const out = {};
+  IDS.forEach(id => {
+    out[id] = [ lerp(a[id][0], b[id][0], k), lerp(a[id][1], b[id][1], k) ];
+  });
+  return out;
+}
+
+function fieldNodes(){
+  const L = fieldLayout(Field.ps);
+  const pad = Math.min(Field.w * .06, 80);
+  const top = 72, bot = 72;
+  const W = Field.w - pad * 2, H = Field.h - top - bot;
+  return IDS.map((id,i) => {
+    const n = L[id];
+    let x = pad + n[0] * W, y = top + n[1] * H;
+    const d = Math.hypot(x - Field.mx, y - Field.my);
+    if (Field.armed && d < 190){
+      const pull = (1 - d / 190) * 46;
+      x += (Field.mx - x) / d * pull;
+      y += (Field.my - y) / d * pull;
+    }
+    x += Math.sin(Field.t * .00034 + i * 1.9) * 7;
+    y += Math.cos(Field.t * .00041 + i * 2.7) * 7;
+    const isVoid = id === 'void';
+    return { id, i, x, y, r: isVoid ? 5.5 : 3.6, label:LABEL[id], kind:isVoid ? 'void' : 'pos', isVoid };
+  });
+}
+
+function edgeBow(a, b, k){
+  const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+  const L = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+  const dir = k % 2 ? 1 : -1;
+  const amp = (18 + (k % 5) * 9) * dir;
+  return { cx: mx + (-(b.y - a.y) / L) * amp, cy: my + ((b.x - a.x) / L) * amp };
+}
+
+function drawGraph(ctx, nodes, edges, o){
+  o = o || {};
+  const idx = {}; nodes.forEach((n,i) => idx[n.id] = i);
+  const bowScale = o.bowScale == null ? 1 : o.bowScale;
+
+  edges.forEach((e,k) => {
+    const ai = idx[e.a], bi = idx[e.b];
+    if (ai == null || bi == null) return;
+    const a = nodes[ai], b = nodes[bi];
+    if (e.alpha <= .004) return;
+    const bow = edgeBow(a, b, k * (e.bowK == null ? 1 : e.bowK));
+    const cx = lerp(a.x, b.x, .5) + (bow.cx - (a.x + b.x) / 2) * bowScale;
+    const cy = lerp(a.y, b.y, .5) + (bow.cy - (a.y + b.y) / 2) * bowScale;
+    const u = e.grow == null ? 1 : e.grow;
+    const ex = lerp(a.x, b.x, u), ey = lerp(a.y, b.y, u);
+
+    ctx.save();
+    ctx.globalAlpha = e.alpha;
+    ctx.lineWidth = e.kind === 'given' ? 1.15 : e.kind === 'forced' ? .95 : .7;
+    ctx.strokeStyle = e.kind === 'forced' ? RED : e.kind === 'ghost' ? '#3a3a3c'
+                   : e.kind === 'conflict' ? RED : e.kind === 'drain' ? '#4a4a46' : '#8f8f89';
+    ctx.setLineDash(e.kind === 'forced' ? [5,5] : e.kind === 'ghost' ? [2,4] : []);
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.quadraticCurveTo(cx, cy, ex, ey);
+    ctx.stroke();
+
+    /* arrowhead */
+    if (e.arrow !== false){
+      const tx = ex - cx, ty = ey - cy;
+      const m = Math.hypot(tx, ty) || 1;
+      const ang = Math.atan2(ty, tx);
+      const s = e.kind === 'given' ? 5.5 : 4.5;
+      ctx.setLineDash([]);
+      ctx.fillStyle = e.kind === 'forced' ? RED : e.kind === 'ghost' ? '#3a3a3c' : '#8f8f89';
+      ctx.beginPath();
+      ctx.moveTo(ex, ey);
+      ctx.lineTo(ex - Math.cos(ang - .38) * s, ey - Math.sin(ang - .38) * s);
+      ctx.lineTo(ex - Math.cos(ang + .38) * s, ey - Math.sin(ang + .38) * s);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+  });
+
+  nodes.forEach(n => {
+    const isHover = Field.hover && Field.hover.id === n.id;
+    const r = n.r || 3.6;
+    ctx.save();
+    ctx.globalAlpha = n.alpha == null ? 1 : n.alpha;
+    if (n.kind === 'void'){
+      ctx.strokeStyle = isHover ? RED : MUT;
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, TAU); ctx.stroke();
+      ctx.globalAlpha *= .5;
+      ctx.beginPath(); ctx.arc(n.x, n.y, r * .55, 0, TAU); ctx.stroke();
+    } else if (n.kind === 'view'){
+      ctx.fillStyle = isHover ? RED : (n.conflict ? RED : '#6b6b65');
+      ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, TAU); ctx.fill();
+    } else {
+      if (isHover){
+        ctx.fillStyle = 'rgba(201,106,100,.14)';
+        ctx.beginPath(); ctx.arc(n.x, n.y, r + 13, 0, TAU); ctx.fill();
+      }
+      ctx.fillStyle = isHover ? RED : INK;
+      ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, TAU); ctx.fill();
+    }
+    /* label */
+    if (n.label){
+      const fs = n.fs || 9.5;
+      ctx.font = '600 ' + fs + 'px ' + MONO;
+      ctx.textAlign = 'center';
+      const tw = ctx.measureText(n.label).width;
+      const ly = n.isVoid ? n.y + r + 16 : n.y - r - 11;
+      ctx.globalAlpha = (n.alpha == null ? 1 : n.alpha) * .9;
+      ctx.fillStyle = 'rgba(10,10,11,.82)';
+      ctx.fillRect(n.x - tw / 2 - 5, ly - fs, tw + 10, fs + 5);
+      ctx.fillStyle = isHover ? RED : (n.isVoid ? MUT : INK);
+      ctx.fillText(n.label, n.x, ly);
+    }
+    ctx.restore();
+  });
+}
+
+function fieldFrame(){
+  const cv = Field.cv;
+  /* presence eases toward how much of the screen the theory works occupy —
+     at zero the canvas is cleared and taken out of the render tree */
+  Field.presence = lerp(Field.presence, Field.want, .08);
+  if (Field.presence < .015){
+    if (!Field.cleared){
+      fitCanvas(cv).ctx.clearRect(0, 0, Field.w || 1, Field.h || 1);
+      cv.style.display = 'none';
+      Field.cleared = true;
+    }
+    return;
+  }
+  if (Field.cleared){ cv.style.display = ''; Field.cleared = false; }
+  cv.style.opacity = Field.presence.toFixed(3);
+  Field.t += REDUCED ? 0 : 16;
+  Field.ps += (Field.p - Field.ps) * .07;
+  const { ctx, w, h } = fitCanvas(Field.cv);
+  Field.w = w; Field.h = h;
+  ctx.clearRect(0, 0, w, h);
+
+  const nodes = fieldNodes();
+  Field.nodes = nodes;
+
+  const forcedA = smooth(.05, .34, Field.ps);
+  const edges = [];
+  GIVEN.forEach(([a,b]) => edges.push({ a, b, kind:'given', alpha:.62, arrow:true }));
+  FORCED.forEach(([a,b],i) => edges.push({
+    a, b, kind:'forced', alpha:.72 * forcedA, bowK:1.6, arrow:true,
+    grow: clamp(forcedA * 1.35 - i * .035, 0, 1)
+  }));
+
+  /* the reticle snap: nearest node within 190px */
+  let best = null, bd = 190;
+  nodes.forEach(n => { const d = Math.hypot(n.x - Field.mx, n.y - Field.my); if (d < bd){ bd = d; best = n; } });
+  Field.hover = best;
+
+  drawGraph(ctx, nodes, edges, { bowScale:1 });
+
+  /* the void grows once the network opens */
+  if (Field.ps > .5){
+    const g = smooth(.5, .8, Field.ps);
+    const v = nodes.find(n => n.isVoid);
+    ctx.save();
+    ctx.globalAlpha = .3 * g;
+    ctx.strokeStyle = RED; ctx.lineWidth = .8;
+    for (let i = 1; i <= 3; i++){
+      ctx.beginPath(); ctx.arc(v.x, v.y, v.r + 14 + i * 16 * g, 0, TAU); ctx.stroke();
+    }
+    ctx.restore();
+  }
+}
+
+/* ============================================================
+   reticle + pointer
+   ============================================================ */
+const Ret = { el:null, x:0, y:0, tx:0, ty:0, on:false };
+function reticleInit(){
+  Ret.el = $('#reticle');
+  if (!FINE) return;
+  addEventListener('mousemove', e => {
+    Ret.tx = e.clientX; Ret.ty = e.clientY;
+    Field.mx = e.clientX; Field.my = e.clientY;
+    Field.armed = true;
+    Ret.el.style.opacity = 1;
+  });
+  addEventListener('mousedown', () => Ret.el.classList.add('press'));
+  addEventListener('mouseup',   () => Ret.el.classList.remove('press'));
+  addEventListener('mouseleave',() => { Ret.el.style.opacity = 0; Field.armed = false; });
+  document.addEventListener('mouseover', e => {
+    const hit = e.target.closest('a,button,.row,.ticks b');
+    Ret.el.classList.toggle('on', !!hit);
+  });
+}
+function reticleFrame(){
+  Ret.x = lerp(Ret.x, Ret.tx, .22);
+  Ret.y = lerp(Ret.y, Ret.ty, .22);
+  if (Ret.el) Ret.el.style.transform = 'translate3d(' + Ret.x + 'px,' + Ret.y + 'px,0)';
+}
+
+/* ============================================================
+   scroll state + hud
+   ============================================================ */
+const Scroll = { p:0, active:null };
+/* the field advances by section, not by raw scroll — so the morph always
+   lands on a stage when its section is centred (the light chapter is skipped) */
+const STAGE_ANCHORS = [['#hero',0],['#w1',1],['#w2',2],['#w3',3]];
+function stageProgress(){
+  const c = scrollY + innerHeight * .5;
+  const pts = [];
+  STAGE_ANCHORS.forEach(([sel, s]) => {
+    const el = $(sel); if (!el) return;
+    const r = el.getBoundingClientRect();
+    pts.push({ y: scrollY + r.top + r.height * .5, s });
+  });
+  if (!pts.length) return 0;
+  if (c <= pts[0].y) return pts[0].s / 3;
+  for (let i = 0; i < pts.length - 1; i++){
+    if (c <= pts[i + 1].y){
+      const t = (c - pts[i].y) / Math.max(1, pts[i + 1].y - pts[i].y);
+      return lerp(pts[i].s, pts[i + 1].s, t) / 3;
+    }
+  }
+  return pts[pts.length - 1].s / 3;
+}
+function scrollFrame(){
+  const max = document.documentElement.scrollHeight - innerHeight;
+  Scroll.p = max > 0 ? clamp(scrollY / max, 0, 1) : 0;
+  Field.p = stageProgress();
+  /* the category field belongs to the three theory works and nothing else.
+     it fades in only while one of them fills most of the screen, so it never
+     appears behind the shell or the fairy chapter */
+  let cover = 0;
+  for (const sel of ['#w1','#w2','#w3']){
+    const r = $(sel).getBoundingClientRect();
+    const vis = Math.max(0, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0)) / innerHeight;
+    if (vis > cover) cover = vis;
+  }
+  Field.want = smooth(.35, .6, cover);
+  $('#progFill').style.width = (Scroll.p * 100).toFixed(2) + '%';
+}
+function hudInit(){
+  const mode = $('#hudMode'), idx = $('#hudIdx');
+  const secs = $$('#hero,#index,#w1,#w2,#w3,#w4,#w5,#w6,#colophon');
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      if (el.dataset.work){
+        Scroll.active = el.dataset.work;
+        idx.textContent = '0' + el.dataset.work;
+        mode.textContent = el.dataset.mode;
+      } else if (el.id === 'hero' || el.id === 'index'){
+        Scroll.active = null; idx.textContent = '00'; mode.textContent = 'PORTFOLIO';
+      } else if (el.id === 'colophon'){
+        Scroll.active = null; idx.textContent = '∎'; mode.textContent = 'END';
+      }
+    });
+  }, { rootMargin:'-45% 0px -45% 0px' });
+  secs.forEach(s => io.observe(s));
+
+  /* dim the field while a plate owns the screen */
+  const live = new Set();
+  const plates = $$('.plate');
+  const io2 = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) live.add(e.target); else live.delete(e.target); });
+    document.body.classList.toggle('plated', live.size > 0);
+  }, { rootMargin:'-25% 0px -25% 0px' });
+  plates.forEach(p => io2.observe(p));
+}
+
+/* ============================================================
+   PLATE 1 — this is a test · twelve beats
+   ============================================================ */
+const BEATS = [
+  { t:'this is a test',              cap:'a test on modelling the art field',              mode:'net',      num:'N = 6' },
+  { t:'the claim',                   cap:'this field has no centre',                      mode:'net',      num:'no centre' },
+  { t:'the objects',                 cap:'six positions — the artwork is the arrow',       mode:'objects',  num:'|E| = 7' },
+  { t:'the forcing',                 cap:'compose, and the axioms demand the rest',       mode:'closure',  num:'7 → 15 · +8' },
+  { t:'the ladder',                  cap:'closure ⟹ total order — initial to terminal',   mode:'order',    num:'total order' },
+  { t:'no zero object',              cap:'initial ≠ terminal — nothing looks both ways',   mode:'nozero',   num:'∅ 0' },
+  { t:'the twist',                   cap:'a clean fit is a proof of what had to be forced',mode:'twist',    num:'clean fit' },
+  { t:'artist as a product',         cap:'curator × manager × dealer × archivist',         mode:'product',  num:'product' },
+  { t:'the field opens',             cap:'opening · post · reshare · resale',             mode:'open',     num:'past the public' },
+  { t:'saturation',                  cap:'four views of one work — they do not glue',      mode:'presheaf', num:'conflicts ↑' },
+  { t:'the void',                    cap:'over-circulated work empties out',               mode:'void',     num:'∅ terminal' },
+  { t:"let's play",                  cap:'open the slop engine and run it yourself',       mode:'play',     num:'→ points-of-view' }
+];
+
+const P1 = { i:0, held:false, visible:false, t:0, views:[], ph:0 };
+function p1Nodes(mode){
+  const L = {
+    net:      LAYOUTS[0],
+    objects:  LAYOUTS[0],
+    closure:  LAYOUTS[1],
+    order:    LAYOUTS[1],
+    nozero:   LAYOUTS[1],
+    twist:    LAYOUTS[1],
+    product:  LAYOUTS[1],
+    open:     LAYOUTS[2],
+    presheaf: LAYOUTS[2],
+    void:     LAYOUTS[2],
+    play:     LAYOUTS[2]
+  }[mode] || LAYOUTS[0];
+  const w = P1.w || 1, h = P1.h || 1;
+  const pad = w * .10, top = h * .13, bot = h * .13;
+  return IDS.map((id,i) => {
+    const n = L[id];
+    return {
+      id, i, label:LABEL[id],
+      x: pad + n[0] * (w - pad * 2),
+      y: top + n[1] * (h - top - bot),
+      r: id === 'void' ? 5.5 : 4,
+      isVoid: id === 'void',
+      kind: id === 'void' ? 'void' : 'pos'
+    };
+  });
+}
+function p1Draw(){
+  const { ctx, w, h } = fitCanvas($('#p1'));
+  P1.w = w; P1.h = h;
+  ctx.clearRect(0, 0, w, h);
+  const b = BEATS[P1.i], mode = b.mode;
+  let nodes = p1Nodes(mode);
+  const edges = [];
+  const showForced = ['closure','order','nozero','twist','product','play'].includes(mode);
+  const g = showForced ? clamp(P1.ph, 0, 1) : 0;
+
+  GIVEN.forEach(([a,bb]) => edges.push({ a, b:bb, kind:'given', alpha:.7, arrow:true }));
+  if (showForced){
+    FORCED.forEach(([a,bb],i) => edges.push({
+      a, b:bb, kind:'forced', bowK:1.7, arrow:true,
+      alpha:.75 * clamp(g * 1.4 - i * .05, 0, 1),
+      grow: clamp(g * 1.5 - i * .06, 0, 1)
+    }));
+  }
+  if (mode === 'open' || mode === 'presheaf' || mode === 'void' || mode === 'play'){
+    edges.push({ a:'void', b:'collector', kind:'drain', alpha:.35, arrow:false, bowK:-2 });
+  }
+  if (mode === 'presheaf'){
+    P1.views.forEach(v => edges.push({ a:v.actor, b:'void', kind: v.conflict ? 'conflict' : 'drain', alpha:.5, arrow:false, bowK:3 }));
+  }
+
+  /* views: drifting nodes for the open field */
+  if (mode === 'open' || mode === 'presheaf' || mode === 'void' || mode === 'play'){
+    const actor = ['artist','gallery','critic','public','collector'];
+    const target = mode === 'open' ? 7 : mode === 'presheaf' ? 16 : mode === 'void' ? 20 : 9;
+    while (P1.views.length < target){
+      const a = actor[(Math.random() * actor.length) | 0];
+      const an = nodes.find(nn => nn.id === a);
+      P1.views.push({ actor:a, conflict: mode === 'presheaf' && Math.random() < .42,
+                      x: an.x + (Math.random() - .5) * 54, y: an.y + (Math.random() - .5) * 54 });
+    }
+    P1.views.forEach((v,i) => {
+      const n = nodes.find(nn => nn.id === v.actor);
+      const tx = n.x + Math.sin(P1.t * .0009 + i * 2.1) * (22 + (i % 5) * 9);
+      const ty = n.y + Math.cos(P1.t * .0011 + i * 1.7) * (18 + (i % 4) * 8);
+      v.x = lerp(v.x, tx, .02); v.y = lerp(v.y, ty, .02);
+      nodes.push({ id:'v' + i, label:'', x:v.x, y:v.y, r: v.conflict ? 2.6 : 1.9,
+                   kind:'view', alpha:.9, isVoid:false, fs:0 });
+    });
+    if (mode === 'void' || mode === 'play'){
+      nodes = nodes.map(n => n.id === 'void' ? { ...n, r: n.r + 4 } : n);
+    }
+  }
+
+  /* artist splits into its four roles */
+  if (mode === 'product'){
+    const a = nodes[0];
+    const roles = ['CURATOR','MANAGER','DEALER','ARCHIVIST'];
+    roles.forEach((r,i) => {
+      const ang = -Math.PI * .9 + i * (Math.PI * .6);
+      const sx = a.x + Math.cos(ang) * 62, sy = a.y + Math.sin(ang) * 46;
+      edges.push({ a:'artist', b:'s' + i, kind:'ghost', alpha:.5, arrow:false, bowK:0 });
+      nodes.push({ id:'s' + i, label:r, x:sx, y:sy, r:2.6, kind:'sat', alpha:.85, isVoid:false, fs:8 });
+    });
+  }
+
+  /* the ordering spine label for the ladder beats */
+  if (showForced && mode !== 'product'){
+    const s = nodes[0], e = nodes[5];
+    ctx.save();
+    ctx.globalAlpha = .5;
+    ctx.strokeStyle = HAIR; ctx.lineWidth = 1; ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(e.x, e.y); ctx.stroke();
+    ctx.font = '9px ' + MONO; ctx.fillStyle = DIM; ctx.textAlign = 'left';
+    ctx.fillText('INITIAL', s.x - 4, s.y + 30);
+    ctx.textAlign = 'right';
+    ctx.fillText('TERMINAL', e.x + 6, e.y + 30);
+    ctx.restore();
+  }
+  if (mode === 'nozero'){
+    ctx.save();
+    ctx.globalAlpha = .85;
+    ctx.font = '600 22px ' + MONO; ctx.textAlign = 'center';
+    ctx.fillStyle = RED;
+    const mid = (nodes[0].x + nodes[5].x) / 2;
+    ctx.fillText('∅ 0', mid, P1.h * .5 + 6);
+    ctx.beginPath(); ctx.moveTo(mid - 26, P1.h * .5 - 4); ctx.lineTo(mid + 26, P1.h * .5 + 4);
+    ctx.strokeStyle = RED; ctx.lineWidth = 1.4; ctx.stroke();
+    ctx.restore();
+  }
+  if (mode === 'twist'){
+    ctx.save();
+    ctx.globalAlpha = .8; ctx.font = '9.5px ' + MONO; ctx.fillStyle = RED; ctx.textAlign = 'center';
+    ctx.fillText('CLEAN FIT = PROOF OF FORCING', w / 2, P1.h * .5 + 44);
+    ctx.restore();
+  }
+  if (mode === 'play'){
+    ctx.save();
+    ctx.globalAlpha = .9; ctx.font = '600 20px ' + MONO; ctx.fillStyle = INK; ctx.textAlign = 'center';
+    ctx.fillText("LET'S PLAY", w / 2, P1.h * .5 + 58);
+    ctx.restore();
+  }
+
+  drawGraph(ctx, nodes, edges, { bowScale:1 });
+
+  /* gluing meter for the presheaf beat */
+  if (mode === 'presheaf'){
+    const p = clamp(P1.ph, 0, 1);
+    ctx.save();
+    const bw = w * .52, bx = (w - bw) / 2, by = P1.h - 26;
+    ctx.strokeStyle = HAIR; ctx.lineWidth = 1;
+    ctx.strokeRect(bx, by, bw, 6);
+    ctx.fillStyle = RED;
+    ctx.fillRect(bx, by, bw * p, 6);
+    ctx.font = '9px ' + MONO; ctx.fillStyle = DIM; ctx.textAlign = 'center';
+    ctx.fillText('GLUING FAILURE', w / 2, by - 7);
+    ctx.restore();
+  }
+}
+function p1Frame(){
+  if (!P1.visible) return;
+  P1.t += REDUCED ? 0 : 16;
+  const mode = BEATS[P1.i].mode;
+  const needsGrow = ['closure','order','nozero','twist','product'].includes(mode);
+  if (needsGrow) P1.ph = clamp(P1.ph + .022, 0, 1);
+  else if (mode === 'presheaf') P1.ph = clamp(P1.ph + .006, 0, 1);
+  else P1.ph = clamp(P1.ph - .05, 0, 1);
+  p1Draw();
+}
+function p1Init(){
+  const ticks = $('#p1ticks');
+  BEATS.forEach((b,i) => {
+    const el = document.createElement('b');
+    el.title = b.t;
+    el.onclick = () => p1Go(i);
+    ticks.appendChild(el);
+  });
+  p1Go(0);
+  const cv = $('#p1');
+  cv.style.pointerEvents = 'auto';
+  const plate = cv.closest('.plate');
+  plate.addEventListener('mouseenter', () => P1.held = true);
+  plate.addEventListener('mouseleave', () => P1.held = false);
+  plate.addEventListener('click', e => { if (!e.target.closest('.ticks b')) p1Go((P1.i + 1) % BEATS.length); });
+  new IntersectionObserver(es => { P1.visible = es[0].isIntersecting; }, { threshold:.15 }).observe(plate);
+  if (!REDUCED) setInterval(() => { if (P1.visible && !P1.held) p1Go((P1.i + 1) % BEATS.length); }, 4200);
+}
+function p1Go(i){
+  P1.i = i; P1.views = []; P1.ph = 0;
+  const b = BEATS[i];
+  $('#p1cap').textContent = b.cap;
+  $('#p1num').textContent = b.num;
+  $$('#p1ticks b').forEach((el,k) => {
+    el.classList.toggle('on', k === i);
+    el.classList.toggle('past', k < i);
+  });
+}
+
+/* ============================================================
+   PLATE 2 — the slop engine
+   ============================================================ */
+const P2 = {
+  nodes:[], links:[], views:[], vid:0, conflicts:0, inflations:0,
+  voided:false, collected:false, ghost:false, visible:false, t:0,
+  cam:{ x:0, y:0, z:1 }, drag:null, work:null, hover:null
+};
+const P2CHAIN = [
+  ['artist','gallery'],['gallery','critic'],['critic','public'],
+  ['public','collector'],['collector','void']
+];
+const P2GHOST = [
+  ['artist','critic'],['artist','public'],['artist','collector'],['artist','void'],
+  ['gallery','public'],['gallery','collector'],['gallery','void'],
+  ['critic','collector'],['critic','void'],['public','void']
+];
+const P2XY = { artist:[.08,.50], gallery:[.26,.26], critic:[.44,.74], public:[.60,.30], collector:[.78,.70], void:[.94,.44] };
+const P2LBL = { instagram:'IG POST', reshare:'RESHARE', opening:'OPENING', resale:'RESALE' };
+const TITLES = ['Untitled (IX)','WW','untitled','Untitled (IX) #2','Untitled [2]','WW (Untitled)','Untitled (IX) — framed','Untitled (faded)','Untitled (IX) [1]','W·W'];
+const PROVS  = ['Artist, 2024','Artist, 2023','Acquired from collector, 2023','Private collection, unlisted','Artist studio, 2024','Acquired from artist, 2024','Estate of the artist, 2023','Courtesy of a private space, 2024','Location unknown'];
+const pick = a => a[(Math.random() * a.length) | 0];
+const drift = (base, p) => {
+  const o = { title:base.title, price:base.price, prov:base.prov };
+  if (Math.random() < p[0]) o.price = Math.max(300, Math.round(base.price * (.7 + Math.random() * 1.6) / 50) * 50);
+  if (Math.random() < p[1]) o.title = pick(TITLES.filter(t => t !== base.title));
+  if (Math.random() < p[2]) o.prov  = pick(PROVS.filter(t => t !== base.prov));
+  return o;
+};
+function p2Seed(){
+  P2.work = { id:'w-01', title:'Untitled (IX)', price:4000, prov:'Artist, 2024', views:[] };
+  P2.views = []; P2.vid = 0; P2.conflicts = 0; P2.inflations = 0;
+  P2.voided = false; P2.collected = false;
+  P2.nodes = IDS.map(id => ({ id, label:LABEL[id], x:P2XY[id][0], y:P2XY[id][1], r: id === 'void' ? 5 : 3.6,
+    isVoid:id === 'void', kind: id === 'void' ? 'void' : 'pos', alpha:1 }));
+  P2.nodes.push({ id:'w-01', label:'', x:P2XY.artist[0] + .04, y:P2XY.artist[1] - .12, r:2.6, kind:'work', alpha:1 });
+  P2.links = P2CHAIN.map(([a,b]) => ({ a, b, kind:'given' }));
+  P2.links.push({ a:'artist', b:'w-01', kind:'workflow' });
+  if (P2.ghost) P2GHOST.forEach(([a,b]) => P2.links.push({ a, b, kind:'ghost' }));
+  p2Hud();
+}
+function p2Recompute(){
+  const vs = P2.work.views;
+  vs.forEach(v => v.conflict = false);
+  let k = 0;
+  for (let i = 0; i < vs.length; i++)
+    for (let j = i + 1; j < vs.length; j++){
+      const a = vs[i].rec, b = vs[j].rec;
+      if (a.title !== b.title || a.price !== b.price || a.prov !== b.prov){
+        k++; vs[i].conflict = vs[j].conflict = true;
+      }
+    }
+  P2.conflicts = k;
+}
+function p2Hud(){
+  const n = $('#p2num');
+  const total = P2.voided ? 'NO · VOIDED' : P2.conflicts > 0 ? 'NO' : 'YES';
+  n.innerHTML = 'views <b>' + P2.views.length + '</b> · conflicts <b class="' +
+    (P2.conflicts ? 'r' : '') + '">' + P2.conflicts + '</b> · totalisable <b class="' +
+    (P2.conflicts || P2.voided ? 'r' : '') + '">' + total + '</b>';
+}
+function p2Add(kind){
+  if (kind === 'reset'){ p2Seed(); return; }
+  if (kind === 'void'){
+    if (!P2.collected && P2.inflations < 2){ P2.flash = 'not collected — inflate the price first'; return; }
+    P2.collected = true; P2.voided = true; P2.work.pinned = false; p2Hud(); return;
+  }
+  const base = { title:P2.work.title, price:P2.work.price, prov:P2.work.prov };
+  const add = (actor, plat, rec) => {
+    rec = rec || drift(base, { instagram:[.10,.07,.07], reshare:[.16,.11,.10], opening:[.08,.09,.12], resale:[1,.10,.14] }[plat]);
+    const v = { id:'v-' + (++P2.vid), actor, plat, conflict:false, rec, age:0, px:false,
+                x:P2XY[actor][0] + (Math.random() - .5) * .1, y:P2XY[actor][1] + (Math.random() - .5) * .1 };
+    P2.views.push(v); P2.work.views.push(v);
+  };
+  if (kind === 'instagram'){ add('public','instagram'); add('public','instagram'); if (Math.random() < .5) add('gallery','instagram'); }
+  if (kind === 'reshare'){ add('public','reshare'); add('public','reshare'); add('gallery','reshare'); }
+  if (kind === 'opening'){ add('critic','opening'); add('critic','opening'); add('gallery','opening'); add('public','opening'); }
+  if (kind === 'resale'){
+    const r = drift(base, [1,.35,.55]);
+    add('gallery','resale', r);
+    add('public','resale', { ...r, price:r.price + ((Math.random() * 300) | 0) });
+    P2.inflations++;
+  }
+  if (P2.views.length > 30) P2.views.splice(0, P2.views.length - 30);
+  p2Recompute(); p2Hud();
+}
+function p2Frame(){
+  if (!P2.visible) return;
+  P2.t += REDUCED ? 0 : 16;
+  const { ctx, w, h } = fitCanvas($('#p2'));
+  P2.w = w; P2.h = h;
+  ctx.clearRect(0, 0, w, h);
+  const pad = w * .09, top = h * .16, bot = h * .16;
+  const P = id => {
+    const n = P2.nodes.find(nn => nn.id === id);
+    return { x: pad + n.x * (w - pad * 2), y: top + n.y * (h - top - bot) };
+  };
+  /* physics-lite: views ease toward their actor, then toward the void */
+  const drawn = P2.nodes.map(n => {
+    const p = P(n.id);
+    return { ...n, x:p.x, y:p.y, r: n.id === 'void' && P2.voided ? 9 : n.r };
+  });
+  const work = drawn.find(n => n.id === 'w-01');
+  const t = clamp(P2.inflations / 2, 0, 1);
+  const wp = P('artist'), cp = P('collector');
+  work.x = lerp(wp.x + 34, cp.x, t);
+  work.y = lerp(wp.y - 26, cp.y, t);
+
+  const edges = [];
+  P2.links.forEach(l => {
+    if (l.kind === 'ghost' && !P2.ghost) return;
+    if (l.kind === 'workflow') return;
+    edges.push({ a:l.a, b:l.b, kind: l.kind === 'ghost' ? 'ghost' : 'given', alpha: l.kind === 'ghost' ? .4 : .6, arrow:true });
+  });
+  edges.push({ a:'artist', b:'w-01', kind:'given', alpha:.5, arrow:false, bowK:-1 });
+  if (P2.voided) edges.push({ a:'w-01', b:'void', kind:'drain', alpha:.7, arrow:false, bowK:1 });
+
+  P2.views.forEach((v,i) => {
+    const a = P(v.actor);
+    if (!v.px){ v.x = a.x + (Math.random() - .5) * 40; v.y = a.y + (Math.random() - .5) * 40; v.px = true; }
+    const drift2 = Math.sin(P2.t * .0008 + i * 2.3) * 30;
+    const drift3 = Math.cos(P2.t * .001 + i * 1.4) * 24;
+    const drain = P2.voided ? .55 : 0;
+    const vp = P('void');
+    v.x = lerp(v.x, (a.x + drift2) * (1 - drain) + vp.x * drain, .012);
+    v.y = lerp(v.y, (a.y + drift3) * (1 - drain) + vp.y * drain, .012);
+    edges.push({ a:'v' + i, b:'void', kind: v.conflict ? 'conflict' : 'drain', alpha:.28, arrow:false, bowK:2.4 });
+    drawn.push({ id:'v' + i, label:'', x:v.x, y:v.y, r: v.conflict ? 2.6 : 1.9, kind:'view',
+                 conflict: v.conflict, alpha: P2.voided ? .3 : .95, isVoid:false, fs:0 });
+  });
+
+  drawGraph(ctx, drawn, edges, { bowScale:1 });
+
+  ctx.save();
+  ctx.font = '9px ' + MONO; ctx.fillStyle = DIM; ctx.textAlign = 'center';
+  ctx.fillText('W-01', work.x, work.y - 12);
+  ctx.restore();
+
+  if (P2.voided){
+    ctx.save();
+    ctx.globalAlpha = .7; ctx.font = '600 10px ' + MONO; ctx.fillStyle = RED; ctx.textAlign = 'center';
+    ctx.fillText('VOIDED', drawn.find(n => n.id === 'void').x, drawn.find(n => n.id === 'void').y + 26);
+    ctx.restore();
+  }
+  if (P2.flash){
+    ctx.save();
+    ctx.font = '9px ' + MONO; ctx.fillStyle = RED; ctx.textAlign = 'center';
+    ctx.fillText(P2.flash.toUpperCase(), w / 2, h - 12);
+    ctx.restore();
+  }
+}
+function p2Init(){
+  p2Seed();
+  const btns = $('#p2btns');
+  btns.addEventListener('click', e => {
+    const b = e.target.closest('button[data-k]');
+    if (!b) return;
+    P2.flash = null;
+    p2Add(b.dataset.k);
+    if (b.dataset.k === 'void' && !P2.voided) { P2.flash = 'not collected — inflate the price first'; p2Hud(); }
+  });
+  const plate = $('#p2').closest('.plate');
+  new IntersectionObserver(es => { P2.visible = es[0].isIntersecting; }, { threshold:.1 }).observe(plate);
+}
+
+/* ============================================================
+   PLATE 3 — the closure, stepped
+   ============================================================ */
+const P3 = { step:1, visible:false, t:0 };
+const P3COUNT = [0,7,13,15,15,15];
+const P3NEW   = [0,0,6,2,0,0];
+const P3CAP   = ['', 'step 1 — the field as given',
+                 'step 2 — two-step routes close six pairs the field never marks directly',
+                 'step 3 — three steps close the last two',
+                 'step 4 — nothing new — every longer route revisits a pair already registered',
+                 'step 5 — nothing new — the closure is complete'];
+/* the eight forced arrows, with the step at which each first appears */
+const P3FORCED = [
+  ['artist','critic',2],['artist','public',2],['gallery','collector',2],['gallery','void',2],
+  ['critic','collector',2],['critic','void',2],
+  ['artist','collector',3],['artist','void',3]
+];
+function p3Draw(){
+  const { ctx, w, h } = fitCanvas($('#p3'));
+  ctx.clearRect(0, 0, w, h);
+  const pad = w * .10, y = h * .5;
+  const nodes = IDS.map((id,i) => ({
+    id, i, label:LABEL[id],
+    x: pad + (i / 5) * (w - pad * 2),
+    y: y + Math.sin(i * 1.1) * h * .085,
+    r: id === 'void' ? 5.5 : 4,
+    isVoid: id === 'void', kind: id === 'void' ? 'void' : 'pos'
+  }));
+  const edges = [];
+  GIVEN.forEach(([a,b]) => edges.push({ a, b, kind:'given', alpha:.75, arrow:true, bowK:1.2 }));
+  P3FORCED.forEach(([a,b,need]) => {
+    if (P3.step < need) return;
+    const isNew = P3.step === need;
+    edges.push({ a, b, kind:'forced', alpha: isNew ? .95 : .3, arrow:true, bowK:1.8,
+                 grow: isNew ? clamp(P3.t / 520, 0, 1) : 1 });
+  });
+  drawGraph(ctx, nodes, edges, { bowScale:1.5 });
+}
+function p3Frame(){
+  if (!P3.visible) return;
+  P3.t += 16;
+  p3Draw();
+}
+function p3Init(){
+  const btns = $('#p3btns');
+  btns.addEventListener('click', e => {
+    const b = e.target.closest('button[data-step]');
+    if (!b) return;
+    p3Go(+b.dataset.step);
+  });
+  new IntersectionObserver(es => { P3.visible = es[0].isIntersecting; }, { threshold:.1 })
+    .observe($('#p3').closest('.plate'));
+  p3Go(1);
+}
+function p3Go(s){
+  P3.step = s; P3.t = 0;
+  $('#p3cap').textContent = P3CAP[s];
+  const tail = s === 1 ? ' · given'
+    : P3NEW[s] ? ' · <span class="r">new +' + P3NEW[s] + '</span>'
+    : ' · <span class="r">+0</span>';
+  $('#p3num').innerHTML = '|R' + ['','¹','²','³','⁴','⁵'][s] + '| = <b>' + P3COUNT[s] + '</b>' + tail;
+  $$('#p3btns button').forEach(b => {
+    const on = +b.dataset.step === s;
+    b.style.color = on ? '#e7e4dc' : '';
+    b.style.borderColor = on ? '#c96a64' : '';
+  });
+}
+
+/* ============================================================
+   the fiction leaves — rise as they arrive
+   ============================================================ */
+function leavesInit(){
+  const leaves = $$('.leaf');
+  if (!leaves.length) return;
+  if (REDUCED){ leaves.forEach(l => l.classList.add('in')); return; }
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold:.15, rootMargin:'0px 0px -10% 0px' });
+  leaves.forEach((l,i) => {
+    l.style.transitionDelay = ((i % 2) * 90) + 'ms';
+    io.observe(l);
+  });
+}
+
+/* ============================================================
+   the sky — iridescent marbled forms (cyberfairy's library)
+   ============================================================ */
+const PASTEL = ['#c9b6e4','#bcd9ee','#bfe3d6','#f0d9cf','#e6d2e6','#cfe0f2','#dfe8d8','#f2e2d8','#dcd0ee'];
+const Sky = { cv:null, w:0, h:0, t:0, on:false, seeded:false, ribbons:[], blobs:[], dust:[] };
+
+function hexA(hex, a){
+  const n = parseInt(hex.slice(1), 16);
+  return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+}
+function skySeed(){
+  Sky.ribbons = [];
+  for (let i = 0; i < 74; i++){
+    Sky.ribbons.push({
+      x: Math.random(), y: Math.random(),
+      seed: Math.random() * 900,
+      col: PASTEL[(Math.random() * PASTEL.length) | 0],
+      w: .7 + Math.random() * 2.4,
+      al: .022 + Math.random() * .05,
+      n: 24 + ((Math.random() * 22) | 0)
+    });
+  }
+  Sky.blobs = [];
+  for (let i = 0; i < 7; i++){
+    Sky.blobs.push({
+      x: .18 + Math.random() * .64, y: .18 + Math.random() * .64,
+      r: .24 + Math.random() * .26,
+      col: PASTEL[(Math.random() * PASTEL.length) | 0],
+      ph: Math.random() * TAU, sp: .0005 + Math.random() * .0011
+    });
+  }
+  Sky.dust = [];
+  for (let i = 0; i < 42; i++){
+    Sky.dust.push({ x:Math.random(), y:Math.random(), r:.6 + Math.random() * 1.6,
+                    sp:.00012 + Math.random() * .0004, ph:Math.random() * TAU });
+  }
+  Sky.seeded = true;
+}
+function skyFlow(x, y, t){
+  return Math.sin(x * 2.3 + t * .00019) * 1.5
+       + Math.cos(y * 1.9 - t * .00016) * 1.5
+       + Math.sin((x + y) * 1.15 + t * .0001) * .9;
+}
+function skyFrame(){
+  if (!Sky.on) return;
+  const { ctx, w, h } = fitCanvas(Sky.cv);
+  Sky.w = w; Sky.h = h; Sky.t += 16;
+  if (!Sky.seeded) skySeed();
+  const t = Sky.t;
+  ctx.clearRect(0, 0, w, h);
+  ctx.globalCompositeOperation = 'lighter';   /* additive — glows on black */
+
+  /* soft nebula */
+  Sky.blobs.forEach((b, i) => {
+    const x = (b.x + Math.sin(t * b.sp + b.ph) * .06) * w;
+    const y = (b.y + Math.cos(t * b.sp * 1.3 + b.ph * 1.7) * .06) * h;
+    const r = b.r * Math.min(w, h) * (1 + Math.sin(t * b.sp * .9 + i) * .1);
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, hexA(b.col, .17));
+    g.addColorStop(.5, hexA(b.col, .06));
+    g.addColorStop(1, hexA(b.col, 0));
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill();
+  });
+
+  /* marbled ribbons — integrated through a slowly turning flow field */
+  ctx.lineCap = 'round';
+  Sky.ribbons.forEach(rb => {
+    const n = rb.n, pts = [];
+    let x = rb.x * w, y = rb.y * h;
+    for (let k = 0; k <= n; k++){
+      pts.push([x, y]);
+      const a = skyFlow(x / w, y / h, t + rb.seed);
+      x += Math.cos(a) * .007 * w;
+      y += Math.sin(a) * .007 * h;
+    }
+    for (let band = -1; band <= 1; band++){
+      ctx.beginPath();
+      for (let k = 0; k <= n; k++){
+        const p = pts[k], q = pts[Math.min(k + 1, n)];
+        const dx = q[0] - p[0], dy = q[1] - p[1];
+        const L = Math.hypot(dx, dy) || 1;
+        const ox = (-dy / L) * band * 2.6, oy = (dx / L) * band * 2.6;
+        if (k === 0) ctx.moveTo(p[0] + ox, p[1] + oy);
+        else ctx.lineTo(p[0] + ox, p[1] + oy);
+      }
+      ctx.strokeStyle = hexA(rb.col, rb.al * (band === 0 ? 1 : .5));
+      ctx.lineWidth = rb.w * (band === 0 ? 1 : .7);
+      ctx.stroke();
+    }
+  });
+
+  /* fairy dust */
+  Sky.dust.forEach(d => {
+    const y = ((d.y - t * d.sp) % 1 + 1) % 1;
+    const x = d.x + Math.sin(t * .0004 + d.ph) * .012;
+    ctx.fillStyle = 'rgba(255,255,255,.5)';
+    ctx.beginPath(); ctx.arc(x * w, y * h, d.r, 0, TAU); ctx.fill();
+  });
+  ctx.globalCompositeOperation = 'source-over';
+}
+function skyInit(){
+  Sky.cv = $('#sky');
+  const chap = $('#w4');
+  if (!Sky.cv || !chap) return;
+  new IntersectionObserver(es => {
+    Sky.on = es[0].isIntersecting;
+    if (Sky.on && !Sky.seeded) skySeed();
+  }, { rootMargin:'-20% 0px -20% 0px' }).observe(chap);
+}
+
+/* ============================================================
+   the catalogue — one thought opening the next
+   ============================================================ */
+const THOUGHTS = [
+  "the akashic records","mother's library","half a million books, burned","a void, not a monument",
+  "wings and sunglasses","no walls · no shelves","the shapeshifter","tombstones and files",
+  "the dark entity","the cockroach","the train, vertical","heightened consciousness",
+  "curiosity → obsession","the enemy of my own library","an infinite space","the hologram",
+  "a tab opens","nothing is forbidden","the graveyard of souls","the retreat through albania",
+  "medieval manuscripts","between two worlds","being nothing","the librarian","the catalogue",
+  "a safe distance","souls in the making","astral projection","the body as a shell",
+  "a precise distance","information that cannot burn","the one who guides","an intergalactic church"
+];
+const ROOT_THOUGHT = 'what do you feel compelled to know?';
+const Cat = {
+  cv:null, w:0, h:0, t:0, on:false, nodes:[], edges:[], pool:[], next:1,
+  cam:{ x:0, y:0, z:1 }, tc:{ x:0, y:0, z:1 }, hover:null
+};
+function catReset(){
+  Cat.nodes = [{ id:0, text:ROOT_THOUGHT, x:0, y:0, depth:0, born:0, parent:null }];
+  Cat.edges = [];
+  Cat.pool = THOUGHTS.slice();
+  Cat.next = 1;
+  Cat.hover = null;
+  catFit();
+  catHud();
+}
+function catHud(){
+  const el = $('#catCount');
+  if (el) el.textContent = Cat.nodes.length + (Cat.nodes.length === 1 ? ' tab open' : ' tabs open');
+}
+function catSpawn(parent, howMany){
+  if (!parent || !Cat.pool.length) return;
+  const gp = parent.parent == null ? null : Cat.nodes.find(n => n.id === parent.parent);
+  const base = gp ? Math.atan2(parent.y - gp.y, parent.x - gp.x) : -Math.PI / 2;
+  const k = Math.min(howMany, Cat.pool.length);
+  const spread = 1.5;
+  for (let i = 0; i < k; i++){
+    const idx = (Math.random() * Cat.pool.length) | 0;
+    const text = Cat.pool.splice(idx, 1)[0];
+    const ang = base + (k === 1 ? 0 : (-spread + (2 * spread * i) / (k - 1))) + (Math.random() - .5) * .45;
+    const dist = 185 + Math.random() * 40 + parent.depth * 8;
+    const node = {
+      id: Cat.next++, text, depth: parent.depth + 1, born: Cat.t, parent: parent.id,
+      x: parent.x + Math.cos(ang) * dist,
+      y: parent.y + Math.sin(ang) * dist
+    };
+    Cat.nodes.push(node);
+    Cat.edges.push({ a: parent.id, b: node.id });
+  }
+  catRelax();
+  catFit();
+  catHud();
+}
+function catRelax(){
+  for (let it = 0; it < 90; it++){
+    for (let i = 0; i < Cat.nodes.length; i++){
+      for (let j = i + 1; j < Cat.nodes.length; j++){
+        const a = Cat.nodes[i], b = Cat.nodes[j];
+        let dx = b.x - a.x, dy = b.y - a.y;
+        let d = Math.hypot(dx, dy) || .01;
+        const min = 210;
+        if (d < min){
+          const f = (min - d) / d * .5;
+          dx *= f; dy *= f;
+          if (a.parent !== null){ a.x -= dx; a.y -= dy; }
+          if (b.parent !== null){ b.x += dx; b.y += dy; }
+        }
+      }
+    }
+  }
+}
+function catFit(){
+  if (!Cat.nodes.length) return;
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  Cat.nodes.forEach(n => {
+    x0 = Math.min(x0, n.x); x1 = Math.max(x1, n.x);
+    y0 = Math.min(y0, n.y); y1 = Math.max(y1, n.y);
+  });
+  const w = Cat.w || 600, h = Cat.h || 400;
+  const pad = 150;
+  const bw = Math.max(1, x1 - x0) + pad * 2, bh = Math.max(1, y1 - y0) + pad * 2;
+  Cat.tc.z = clamp(Math.min(w / bw, h / bh), .3, 1.1);
+  Cat.tc.x = (x0 + x1) / 2;
+  Cat.tc.y = (y0 + y1) / 2;
+}
+function catScreen(n, w, h){
+  const wob = Math.sin(Cat.t * .0004 + n.id * 1.7) * 2.4;
+  const wob2 = Math.cos(Cat.t * .0005 + n.id * 2.3) * 2.4;
+  return [ (n.x - Cat.cam.x) * Cat.cam.z + w / 2 + wob,
+           (n.y - Cat.cam.y) * Cat.cam.z + h / 2 + wob2 ];
+}
+function catFrame(){
+  if (!Cat.on) return;
+  const { ctx, w, h } = fitCanvas(Cat.cv);
+  Cat.w = w; Cat.h = h; Cat.t += 16;
+  if (Cat.fitW !== w || Cat.fitH !== h){ Cat.fitW = w; Cat.fitH = h; catFit(); }
+  ctx.clearRect(0, 0, w, h);
+  Cat.cam.x = lerp(Cat.cam.x, Cat.tc.x, .06);
+  Cat.cam.y = lerp(Cat.cam.y, Cat.tc.y, .06);
+  Cat.cam.z = lerp(Cat.cam.z, Cat.tc.z, .06);
+
+  ctx.strokeStyle = '#33333a';
+  ctx.lineWidth = 1;
+  Cat.edges.forEach(e => {
+    const a = Cat.nodes.find(n => n.id === e.a), b = Cat.nodes.find(n => n.id === e.b);
+    if (!a || !b) return;
+    const [ax, ay] = catScreen(a, w, h), [bx, by] = catScreen(b, w, h);
+    ctx.globalAlpha = clamp((Cat.t - b.born) / 600, 0, 1) * .9;
+    ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+  });
+  ctx.globalAlpha = 1;
+
+  Cat.nodes.forEach(n => {
+    const [x, y] = catScreen(n, w, h);
+    const grow = clamp((Cat.t - n.born) / 520, 0, 1);
+    const isRoot = n.parent === null;
+    const isHover = Cat.hover === n;
+    const fs = clamp(12.5 * Cat.cam.z, 8.5, 13);
+    ctx.globalAlpha = grow;
+    ctx.font = (isRoot ? '600 ' : '400 ') + fs + 'px ' + MONO;
+    ctx.textAlign = 'center';
+    const tw = ctx.measureText(n.text).width;
+    const bw2 = tw / 2 + 9, bh2 = fs * .95;
+    if (isRoot || isHover){
+      ctx.fillStyle = isHover ? 'rgba(176,125,118,.12)' : 'rgba(231,228,220,.05)';
+      ctx.fillRect(x - bw2, y - bh2, bw2 * 2, bh2 * 2);
+    } else {
+      ctx.fillStyle = 'rgba(12,12,13,.62)';
+      ctx.fillRect(x - bw2, y - bh2, bw2 * 2, bh2 * 2);
+    }
+    ctx.strokeStyle = isHover ? '#b07d76' : (isRoot ? '#4c4c52' : '#2c2c31');
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x - bw2, y - bh2, bw2 * 2, bh2 * 2);
+    ctx.fillStyle = isHover ? '#b07d76' : (isRoot ? '#e7e4dc' : '#bdb9b1');
+    ctx.fillText(n.text, x, y + fs * .34);
+    ctx.globalAlpha = 1;
+  });
+
+  if (!Cat.pool.length && Cat.nodes.length > 1){
+    ctx.font = 'italic 13px ' + MONO;
+    ctx.fillStyle = '#5b5954';
+    ctx.textAlign = 'center';
+    ctx.fillText('the catalogue is exhausted — close all and begin again', w / 2, h - 16);
+  }
+}
+function catHit(mx, my){
+  let best = null, bd = 1e9;
+  Cat.nodes.forEach(n => {
+    const [x, y] = catScreen(n, Cat.w, Cat.h);
+    const d = Math.hypot(x - mx, y - my);
+    if (d < bd){ bd = d; best = n; }
+  });
+  return bd < 46 ? best : null;
+}
+function catInit(){
+  Cat.cv = $('#catcv');
+  if (!Cat.cv) return;
+  catReset();
+  const panel = Cat.cv.closest('.cat');
+  new IntersectionObserver(es => {
+    Cat.on = es[0].isIntersecting;
+  }, { threshold:.12 }).observe(panel);
+
+  const rect = () => Cat.cv.getBoundingClientRect();
+  Cat.cv.addEventListener('mousemove', e => {
+    const r = rect();
+    Cat.hover = catHit(e.clientX - r.left, e.clientY - r.top);
+    Cat.cv.style.cursor = Cat.hover ? 'pointer' : 'default';
+  });
+  Cat.cv.addEventListener('mouseleave', () => { Cat.hover = null; });
+  Cat.cv.addEventListener('click', e => {
+    const r = rect();
+    const hit = catHit(e.clientX - r.left, e.clientY - r.top);
+    if (hit) catSpawn(hit, 2 + ((Math.random() * 2) | 0));
+  });
+  const more = $('#catMore'), reset = $('#catReset');
+  if (more) more.addEventListener('click', () => {
+    const last = Cat.nodes[Cat.nodes.length - 1];
+    catSpawn(last, 2);
+  });
+  if (reset) reset.addEventListener('click', catReset);
+}
+
+/* ============================================================
+   cell music — one audio element, two voices
+   ============================================================ */
+function cellInit(){
+  const audio = document.createElement('audio');
+  audio.src = 'cell-music-techno.mp3';
+  audio.preload = 'metadata';
+  const btn = $('#cellPlay'), bar = $('#cellBar'), time = $('#cellTime');
+  if (!btn) return;
+  let voice = 'techno';
+
+  const fmt = t => {
+    if (!isFinite(t)) t = 0;
+    const m = Math.floor(t / 60), s = Math.floor(t % 60);
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  };
+  const paint = () => {
+    const d = audio.duration || 20;
+    bar.style.width = (Math.min(1, audio.currentTime / d) * 100).toFixed(2) + '%';
+    time.textContent = fmt(audio.currentTime) + ' / ' + fmt(d);
+  };
+  const label = () => { btn.textContent = audio.paused ? '▶ play' : '❚❚ pause'; };
+
+  $$('.vbtn').forEach(b => b.addEventListener('click', () => {
+    const next = b.dataset.voice;
+    if (next === voice) return;
+    const wasPlaying = !audio.paused;
+    voice = next;
+    $$('.vbtn').forEach(x => x.classList.toggle('on', x === b));
+    audio.src = 'cell-music-' + voice + '.mp3';
+    audio.currentTime = 0;
+    if (wasPlaying) audio.play().catch(() => {});
+    paint();
+  }));
+
+  btn.addEventListener('click', () => {
+    if (audio.paused) audio.play().catch(() => {}); else audio.pause();
+  });
+
+  const rate = $('#cellRate'), rateVal = $('#cellRateVal');
+  if (rate){
+    rate.addEventListener('input', () => {
+      const v = parseFloat(rate.value);
+      audio.playbackRate = v;
+      rateVal.textContent = v.toFixed(2) + '×';
+    });
+  }
+  audio.addEventListener('play', label);
+  audio.addEventListener('pause', label);
+  audio.addEventListener('timeupdate', paint);
+  audio.addEventListener('loadedmetadata', paint);
+  audio.addEventListener('ended', () => { audio.currentTime = 0; label(); paint(); });
+  paint(); label();
+}
+
+/* ============================================================
+   keyboard
+   ============================================================ */
+function keysInit(){
+  const spots = ['#hero','#w1','#w2','#w3','#w4','#w5','#w6','#colophon'];
+  const current = () => {
+    const line = innerHeight * .3;
+    let cur = 0;
+    spots.forEach((s,i) => { if ($(s).getBoundingClientRect().top <= line) cur = i; });
+    return cur;
+  };
+  const go = i => $(spots[clamp(i, 0, spots.length - 1)]).scrollIntoView({ behavior:'smooth' });
+  addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key, i = current();
+    if (k >= '1' && k <= '6') go(+k);   /* jump to a work */
+    else if (k === 'Escape') go(0);                                 /* back to the field */
+    else if (k === 'j' || (k === 'ArrowDown' && e.shiftKey)) go(i + 1);
+    else if (k === 'k') go(i - 1);
+  });
+}
+
+/* ============================================================
+   boot + one loop
+   ============================================================ */
+function boot(){
+  Field.cv = $('#field');
+  Field.ctx = Field.cv.getContext('2d');
+  reticleInit();
+  hudInit();
+  p1Init();
+  p2Init();
+  p3Init();
+  skyInit();
+  cellInit();
+  catInit();
+  leavesInit();
+  keysInit();
+  scrollFrame();
+
+  /* the local-server note is only relevant when opening the file directly */
+  const sn = $('#serverNote');
+  if (sn && location.protocol !== 'file:') sn.style.display = 'none';
+
+  /* re-measure on resize */
+  let rz;
+  addEventListener('resize', () => {
+    clearTimeout(rz);
+    rz = setTimeout(remeasure, 140);
+  });
+
+  function loop(){
+    scrollFrame();
+    fieldFrame();
+    skyFrame();
+    catFrame();
+    reticleFrame();
+    p1Frame();
+    p2Frame();
+    p3Frame();
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+}
+if (document.readyState === 'loading') addEventListener('DOMContentLoaded', boot);
+else boot();
+</script>
+</body>
+</html>
