@@ -308,6 +308,13 @@ h1 .r{color:var(--red)}
 .open.off{color:var(--dim);border-color:var(--hair);cursor:default}
 .open.off::after{display:none}
 .open.off .ar{opacity:.6}
+.mechs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,60px);margin:0 0 9vh}
+@media (max-width:900px){.mechs{grid-template-columns:1fr}}
+.mech{border-top:1px solid var(--hair);padding-top:18px}
+.mech svg{display:block;width:100%;height:auto;overflow:visible}
+.mech svg text{font-family:var(--sans);font-size:15px;fill:var(--soft)}
+.mech svg text.void{font-family:var(--serif);font-style:italic;font-size:19px;fill:var(--ink)}
+.mech svg text.lbl{fill:var(--mut);font-size:14px}
 .liminal code{font-family:var(--mono);font-size:.92em;color:var(--mut);background:rgba(231,228,220,.05);padding:1px 5px}
 
 /* ---------- work 06 — cell music ---------- */
@@ -725,49 +732,58 @@ h1 .r{color:var(--red)}
     <div class="wrap">
       <p class="kick">05 — paper &amp; playable space · 2026</p>
       <h3>liminality mechanisms</h3>
-      <p class="sub">the fold, the grid, and the void</p>
+      <p class="sub">the fold, the grid &amp; the void</p>
 
       <div class="lcols">
         <div>
           <p class="body">
-            Transit cuts through striated space to open a temporary pocket of what Deleuze and
-            Guattari call smooth space. For a certain amount of time, between point A and point B,
-            you are <span class="r">off the grid</span>.
+            In May 2019 a single image was posted to 4chan's /x/ board, in a thread asking for
+            pictures that felt "off": mono-yellow wallpaper, damp carpet, humming fluorescent light.
+            A reply gave it a myth — noclip out of reality in the wrong place and you end up in
+            <span class="r">the Backrooms</span>. Internet folklore did the rest: levels, entities in
+            foggy corridors, and people going out to find the real thing in empty malls, transit
+            stations and basements.
           </p>
           <p class="body">
-            The initial intuition drags us toward the linear: you enter at A, travel a corridor,
-            exit at B as a slightly altered person. But B does not exist. There was only ever A,
-            and B is just the other side of A. You can't see who you are becoming while you become
-            it — identity is strictly retroactive.
+            The Backrooms take the banal architecture of late capitalism — offices, hotel corridors,
+            transit hubs — and strip it of function. What is left is eerie in Mark Fisher's sense:
+            built for people, emptied of them. Like Augé's non-places, these are zones where identity
+            drops away. Augé read that as alienation; the paper reads it as release. Between point A
+            and point B you are <span class="r">off the grid</span>.
           </p>
           <p class="body">
-            Classic anthropology treated the in-between as a problem to be escaped. But coming into
-            a stable position is also an enclosure: to settle into one state is to foreclose the
-            others. To choose permanent liminality is to live an unscripted existence as something
-            cathartic rather than a transitional crisis.
+            The paper replaces the line from A to B with <span class="r">a fold</span>. A and B are
+            identities — two faces of one surface pressed close across a narrow gap. While you move
+            along the fold, B does not yet exist; there is only the void the surface bends around.
+            You can't see who you are becoming while you become it — identity is strictly retroactive.
+          </p>
+          <p class="body">
+            Classic anthropology treated the in-between as a bridge between fixed states, and warned
+            that permanent liminality is where tricksters thrive. But settling into one state is also
+            an enclosure: it forecloses the others. To choose permanent liminality is to live an
+            unscripted existence — the void not as a threat, but as room.
           </p>
           <p class="body">
             <span class="r">LIMINAL EXPRESS</span> is the practice to that paper. You board and walk —
-            the subway, the void, the backrooms, an endless suburbia — with no objective and no
-            destination, looping. Walking these spaces aimlessly is the simulation of permanent
-            liminality: the transition that never completes.
+            the last train, platforms and passages, a service lift to B7, the backrooms, rows of storage
+            units — with no objective and no destination, looping. Walking these spaces aimlessly is the
+            simulation of permanent liminality: the transition that never completes.
           </p>
           <dl class="spec">
-            <dt>paper</dt><dd>Liminality Mechanisms: the Fold, the Grid, and the Void</dd>
+            <dt>paper</dt><dd>The Fold, the Grid &amp; the Void — Triple Ampersand, 2026</dd>
             <dt>game</dt><dd>LIMINAL EXPRESS — first person · browser · four spaces</dd>
             <dt>spaces</dt><dd>subway · void · backrooms · suburbia</dd>
             <dt>controls</dt><dd>WASD move · shift run · space jump · E open door · click to look</dd>
             <dt>status</dt><dd>playable</dd>
           </dl>
           <div class="lactions">
-            <span class="open off"><span>play liminal express</span><span class="ar">—</span></span>
-            <a class="open" href="liminality-mechanisms.pdf" target="_blank" rel="noopener">
+            <a class="open" href="https://anksyee.github.io/liminal-express/" target="_blank" rel="noopener">
+              <span>play liminal express</span><span class="ar">→</span>
+            </a>
+            <a class="open" href="https://tripleampersand.org/the-fold-the-grid-the-void/" target="_blank" rel="noopener">
               <span>read the paper</span><span class="ar">→</span>
             </a>
           </div>
-          <p class="note">
-            the playable build is not public yet — the stills above are from it.
-          </p>
         </div>
 
         <figure class="lfig">
@@ -776,10 +792,72 @@ h1 .r{color:var(--red)}
         </figure>
       </div>
 
+      <div class="mechs">
+        <figure class="lfig mech">
+          <svg viewBox="0 0 640 170" role="img" aria-label="Diagram: linear mechanism — point A to point B along a dotted line">
+            <line x1="250" y1="58" x2="378" y2="58" stroke="var(--mut)" stroke-width="1.4"/>
+            <path d="M378 52 L390 58 L378 64 Z" fill="var(--mut)"/>
+            <line x1="60" y1="100" x2="580" y2="100" stroke="var(--soft)" stroke-width="1.4" stroke-dasharray="3 7"/>
+            <circle cx="60" cy="100" r="5.5" fill="var(--ink)"/>
+            <circle cx="580" cy="100" r="5.5" fill="var(--ink)"/>
+            <text x="60" y="134" text-anchor="middle">point A</text>
+            <text x="580" y="134" text-anchor="middle">point B</text>
+          </svg>
+          <figcaption>from the paper — linear mechanism</figcaption>
+        </figure>
+        <figure class="lfig mech">
+          <svg viewBox="0 0 640 170" role="img" aria-label="Diagram: mechanism of the fold — point A and point B as two faces of one surface folded around the void">
+            <path d="M112 85 L136 62 H520 A23 23 0 0 1 520 108 H136 Z" fill="none" stroke="var(--soft)" stroke-width="1.4" stroke-linejoin="round"/>
+            <circle cx="112" cy="85" r="5.5" fill="var(--ink)"/>
+            <text x="20" y="72">point A</text>
+            <text x="20" y="110">point B</text>
+            <text x="330" y="91" text-anchor="middle" class="void">the void</text>
+            <text x="558" y="90" class="lbl">the fold</text>
+          </svg>
+          <figcaption>from the paper — mechanism of the fold</figcaption>
+        </figure>
+      </div>
+
       <div class="spaces">
         <figure class="space s1">
           <img src="game-title.png" alt="LIMINAL EXPRESS title screen — click to board">
           <figcaption><b>liminal express</b> — click to board</figcaption>
+        </figure>
+        <figure class="space">
+          <img src="game-platform.jpg" alt="The last train is leaving: an empty platform, a waiting train, zigzag tactile strips" loading="lazy">
+          <figcaption><b>the platform</b> — the last train is leaving</figcaption>
+        </figure>
+        <figure class="space">
+          <img src="game-passage.jpg" alt="A tiled passage entrance off the platform, a long corridor of columns behind it" loading="lazy">
+          <figcaption><b>the passage</b> — off the platform, off the grid</figcaption>
+        </figure>
+        <figure class="space">
+          <img src="game-corridor.jpg" alt="Long terrazzo corridor, white tiles, columns, a blue sign far down the wall" loading="lazy">
+          <figcaption><b>the corridor</b> — no one is coming the other way</figcaption>
+        </figure>
+        <figure class="space">
+          <img src="game-walkway.jpg" alt="A moving walkway between beige tiled walls, grey doors, an exit sign far ahead" loading="lazy">
+          <figcaption><b>the walkway</b> — motion without walking</figcaption>
+        </figure>
+        <figure class="space">
+          <img src="game-exit.jpg" alt="Green-lit corridor toward an EXIT sign: platforms · street, a lift at the end" loading="lazy">
+          <figcaption><b>the exit</b> — platforms · street — neither arrives</figcaption>
+        </figure>
+        <figure class="space">
+          <img src="game-service-lift.jpg" alt="Service lift at level B7, zigzag black and white floor, a slit in the wall" loading="lazy">
+          <figcaption><b>B7</b> — service lift</figcaption>
+        </figure>
+        <figure class="space">
+          <img src="game-backrooms-hall.jpg" alt="Mono-yellow backrooms hall, fluorescent panels, fog at the far end" loading="lazy">
+          <figcaption><b>the backrooms</b> — mono-yellow, humming</figcaption>
+        </figure>
+        <figure class="space">
+          <img src="game-storage.jpg" alt="Rows of red storage unit doors between ribbed yellow walls" loading="lazy">
+          <figcaption><b>storage</b> — every door locked</figcaption>
+        </figure>
+        <figure class="space">
+          <img src="game-storage-dark.jpg" alt="Dim storage corridor, red doors, the far end lost in fog" loading="lazy">
+          <figcaption><b>storage, after hours</b> — the light keeps going</figcaption>
         </figure>
         <figure class="space">
           <img src="game-subway.png" alt="Inside the subway car: red seats, chrome poles, black windows, ceiling lights">
@@ -884,10 +962,6 @@ h1 .r{color:var(--red)}
     <div class="wrap cgrid">
       <div>
         <p class="kick">colophon</p>
-        <p class="body" style="font-size:15px;line-height:1.72;color:var(--soft);margin:0">
-          Works, papers and code by Ana Marinković.
-          Everything here is hand-written HTML, canvas and SVG — no frameworks, no build step.
-        </p>
         <p class="note">
           01 this is a test — cartography · guidance: Edgar Venezuela, PhD<br>
           02 the slop engine — simulation<br>
